@@ -1,1 +1,4 @@
 /target/
+
+/.settings/
+/src/main/WebRoot/WEB-INF/classes
