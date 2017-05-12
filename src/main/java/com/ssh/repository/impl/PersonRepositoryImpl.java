@@ -1,7 +1,8 @@
 package com.ssh.repository.impl;
 
+import com.ssh.entity.Person;
 import com.ssh.repository.PersonRepository;
-import com.ssh.pojo.Person;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

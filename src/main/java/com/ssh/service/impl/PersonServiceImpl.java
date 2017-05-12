@@ -1,6 +1,6 @@
 package com.ssh.service.impl;
 
-import com.ssh.pojo.Person;
+import com.ssh.entity.Person;
 import com.ssh.repository.PersonRepository;
 import com.ssh.service.PersonService;
 

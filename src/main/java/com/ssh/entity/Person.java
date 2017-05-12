@@ -1,4 +1,4 @@
-package com.ssh.pojo;
+package com.ssh.entity;
 
 import javax.persistence.*;
 

@@ -1,6 +1,6 @@
 package com.ssh.repository;
 
-import com.ssh.pojo.Person;
+import com.ssh.entity.Person;
 
 /**
  * Created by XRog
