@@ -3,12 +3,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
     xmlns:context="http://www.springframework.org/schema/context"  
     xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
     xsi:schemaLocation="http://www.springframework.org/schema/beans    
                         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
                         http://www.springframework.org/schema/context    
-                        http://www.springframework.org/schema/context/spring-context-3.1.xsd    
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
                         http://www.springframework.org/schema/mvc    
-                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">  
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd    
+                        http://www.springframework.org/schema/tx 
+                     	http://www.springframework.org/schema/tx/spring-tx.xsd
+                     	http://www.springframework.org/schema/aop 
+                     	http://www.springframework.org/schema/aop/spring-aop.xsd ">  
     
     <!-- 启动注解驱动的spring MVC功能,注册请求url和注解POJO类方法的映射-->
     <mvc:annotation-driven />
@@ -24,7 +30,11 @@
     <mvc:resources mapping="/js/**" location="/resources/js/" />
     <mvc:resources mapping="/css/**" location="/resources/css/" />
     <mvc:resources mapping="/img/**" location="/resources/img/" />
-      
+    <!-- 事物管理器配置  -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
     <!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->  
     <!-- <bean id="multipartResolver"    
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">    
