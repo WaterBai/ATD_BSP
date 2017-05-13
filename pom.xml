@@ -149,6 +149,11 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>${fileuploadVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+			<version>1.13.1.RELEASE</version>
+		</dependency>
 
 		<!-- lombok插件导包 -->
 		<!-- <dependency> <groupId>org.projectlombok</groupId> <artifactId>lombok</artifactId> 

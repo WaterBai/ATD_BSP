@@ -1,72 +1,80 @@
 package com.ssh.entity;
 
 
-import java.io.Serializable;
-import java.util.Date;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.GenericGenerator;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 
 /**
- * 
  * @author Administrator
- * 
  */
 @MappedSuperclass
 public class BaseEntity implements Serializable {
-	
-	public final static int DELETE_FLAG_YES = 1 ;
-	public final static int DELETE_FLAG_NO = 0 ;
+
+    public final static int DELETE_FLAG_YES = 1;
+    public final static int DELETE_FLAG_NO = 0;
 
     /**
      * 主键标示
      */
-	@Id
-	@GeneratedValue(generator = "_increment")
-	@GenericGenerator(name = "_increment", strategy = "increment")
-	@Column(length=32)
-	private Integer pid;
-	
-	/**
-	 * 删除标志  1已经删除，0 正常
-	 */
-	@Column(precision = 1,name ="delete_flag")
-	private Integer deleteFlag = DELETE_FLAG_NO ;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private  Date createTime  = new Date ();
+    @Id
+    @GeneratedValue(generator = "_increment")
+    @GenericGenerator(name = "_increment", strategy = "increment")
+    @Column(length = 32)
+    private Integer pid;
 
-	public Integer getPid() {
-		return pid;
-	}
+    /**
+     * 删除标志  1已经删除，0 正常
+     */
+    @Column(precision = 1, name = "delete_flag")
+    private Integer deleteFlag = DELETE_FLAG_NO;
 
-	public void setPid(Integer pid) {
-		this.pid = pid;
-	}
+    @CreatedDate
+    @Column(name = "created_date", nullable = false)
+    private LocalDate createTime = LocalDate.now();
 
-	public Integer getDeleteFlag() {
-		return deleteFlag;
-	}
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
 
-	public void setDeleteFlag(Integer deleteFlag) {
-		this.deleteFlag = deleteFlag;
-	}
-	
-	public Date getCreateTime() {
-		return createTime;
-	}
+    private LocalDate lastModifiedDate = LocalDate.now();
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public Integer getPid() {
+        return pid;
+    }
 
-	
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
 
+    public Integer getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Integer deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public LocalDate getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDate createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDate getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDate lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 }
