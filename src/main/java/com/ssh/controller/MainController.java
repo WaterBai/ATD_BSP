@@ -6,40 +6,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ssh.entity.Person;
+import com.ssh.service.BaseService;
 import com.ssh.service.PersonService;
 import com.ssh.service.TestService;
 
 @Controller
 public class MainController {
 
-	@Autowired
-	private TestService testService;
+    @Autowired
+    private TestService testService;
 
-	@Autowired
-	private PersonService personService;
+    @Autowired
+    private BaseService baseService;
 
-	@RequestMapping(value = "test", method = RequestMethod.GET)
-	public String test() {
-		System.out.println("ok");
-		// 实际返回的是views/test.jsp ,spring-mvc.xml中配置过前后缀
-		return "NewFile";
-	}
+    @Autowired
+    private PersonService personService;
 
-	@RequestMapping(value = "springtest", method = RequestMethod.GET)
-	public String springTest() {
-		return testService.test();
-	}
+    @RequestMapping(value = "test", method = RequestMethod.GET)
+    public String test() {
+        System.out.println("ok");
+        // 实际返回的是views/test.jsp ,spring-mvc.xml中配置过前后缀
+        return "NewFile";
+    }
 
-	@RequestMapping(value = "savePerson", method = RequestMethod.GET)
-	@ResponseBody
-	public String savePerson() {
-		personService.savePerson();
-		return "success!";
-	}
-	@RequestMapping(value = "getPersons", method = RequestMethod.GET)
-	@ResponseBody
-	public String getPersons() {
-		personService.savePerson();
-		return "success!";
-	}
+    @RequestMapping(value = "springtest", method = RequestMethod.GET)
+    public String springTest() {
+        return testService.test();
+    }
+
+    @RequestMapping(value = "savePerson", method = RequestMethod.GET)
+    @ResponseBody
+    public String savePerson() {
+        personService.savePerson();
+        return "success!";
+    }
+
+    @RequestMapping(value = "testBaseAdd", method = RequestMethod.GET)
+    @ResponseBody
+    public String testBaseAdd() {
+        baseService.savePerson();
+        return "success!";
+    }
+
+    @RequestMapping(value = "testBaseGetById", method = RequestMethod.GET)
+    @ResponseBody
+    public String testBaseGetById() {
+        Person per = baseService.getById(Person.class, 1L);
+        System.out.println(per.toString());
+        return "success!";
+    }
 }

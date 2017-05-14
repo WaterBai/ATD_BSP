@@ -3,10 +3,24 @@ package com.ssh.repository;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.springframework.orm.hibernate4.HibernateTemplate;
-
 public interface BaseDao{
+    
+    /**
+     * 按id加载数据
+     * @param clazz
+     * @param id
+     * @return
+     */
+    public <T> T load(Class<T> clazz,Serializable id);
+
+    /**
+     * 按id加载数据
+     * @param clazz
+     * @param id
+     * @return
+     */
+    public <T> T get(Class<T> clazz,Serializable id);
+    
     /** 
      * 增加一个entity对象，返回是否添加成功 
      * @param T 对象类型 
@@ -14,7 +28,7 @@ public interface BaseDao{
      * @return boolean true/false 
      * @throws Exception 
      * */  
-    public <T> boolean addentity(T entity) throws Exception;  
+    public <T> boolean addEntity(T entity);  
 
    
     /**  
@@ -33,24 +47,6 @@ public interface BaseDao{
      * */  
     public <T> boolean removeEntity(T entity) throws Exception;
  
-    /**  
-     * 传入要实体类的class和int主键，返回具体实体 
-     * @param clazz 
-     * @param id 
-     * @return T 
-     * @throws Exception 
-     * */  
-    public <T> T getById(Class<T> clazz,int id) throws Exception;  
-    
-    /**  
-     * 传入要实体类的class和String主键，返回具体实体 
-     * @param clazz 
-     * @param id 
-     * @return T 
-     * @throws Exception 
-     * */  
-    public <T> T getById(Class<T> clazz,String id) throws Exception; 
-    
     /**  
      * 传入要实体类的class和Serializable主键，返回具体实体 
      * @param clazz 
