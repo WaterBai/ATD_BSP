@@ -2,27 +2,11 @@ package com.ssh.service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+
+import com.ssh.entity.PageResults;
 
 public interface BaseService {
-    
-    //测试save
-    public boolean savePerson();
-    
-    /**
-     * 按id加载数据
-     * @param clazz
-     * @param id
-     * @return
-     */
-    public <T> T load(Class<T> clazz,Serializable id);
-
-    /**
-     * 按id加载数据
-     * @param clazz
-     * @param id
-     * @return
-     */
-    public <T> T get(Class<T> clazz,Serializable id);
     
     /** 
      * 增加一个entity对象，返回是否添加成功 
@@ -40,7 +24,7 @@ public interface BaseService {
      * @return boolean 
      * @throws Exception 
      * */  
-    public <T> boolean updateEntity(T entity) throws Exception;  
+    public <T> boolean updateEntity(T entity);  
    
     /**  
      * 传入要删除的实体，返回boolean结果 
@@ -48,7 +32,7 @@ public interface BaseService {
      * @return boolean 
      * @throws Exception 
      * */  
-    public <T> boolean removeEntity(T entity) throws Exception;
+    public <T> boolean removeEntity(T entity);
  
     /**  
      * 传入要实体类的class和Serializable主键，返回具体实体 
@@ -75,13 +59,26 @@ public interface BaseService {
      * @return Integer 
      * @throws Exception 
      * */  
-    public int executeSql(String sql) throws Exception;  
+    public int excuteBySql(String sql,Map<String,String> param);  
     
-    /**  
+    /**
      * 执行sql查询语句，获取list集合 
-     * @param sql 
-     * @return List 
-     * @throws Exception 
-     * */  
-    public <T> List<T> executeSqlQuery(String sql) throws Exception; 
+     * @param sql
+     * @param param
+     * @return
+     */
+    public List<Map<String,Object>> queryBySql(String sql,Map<String,String> param); 
+    public <T> List<T> queryBySql(String scriptId,Map<String,String> param,Class<T> clazz);
+
+    /**
+     * 执行sql查询分页
+     * @param queryId
+     * @param param
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    public <T> PageResults<T> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize,Class<T> clazz);
+    public PageResults<Map<String, Object>> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize);
+
 }

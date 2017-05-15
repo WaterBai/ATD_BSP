@@ -2,8 +2,11 @@ package com.ssh.entity;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table(name = "Person")
+@DynamicUpdate(true)
 public class Person {
 
     @Id

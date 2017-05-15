@@ -2,11 +2,13 @@ package com.ssh.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssh.entity.PageResults;
 import com.ssh.entity.Person;
 import com.ssh.repository.BaseDao;
 import com.ssh.service.BaseService;
@@ -17,70 +19,54 @@ public class BaseServiceImpl implements BaseService{
     @Autowired
     private BaseDao baseDao;
 
-    //@Transactional
-    public boolean savePerson(){
-        Person person = new Person();
-        person.setUsername("XRog");
-        person.setPhone("18381005946");
-        person.setAddress("chenDu");
-        person.setRemark("this is XRog");
-        return baseDao.addEntity(person);
-    }
-
-    @Override
-    public <T> T load(Class<T> clazz, Serializable id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <T> T get(Class<T> clazz, Serializable id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     @Override
     public <T> boolean addEntity(T entity) {
-        // TODO Auto-generated method stub
-        return false;
+        return baseDao.addEntity(entity);
     }
 
     @Override
-    public <T> boolean updateEntity(T entity) throws Exception {
-        // TODO Auto-generated method stub
-        return false;
+    public <T> boolean updateEntity(T entity){
+        return baseDao.updateEntity(entity);
     }
 
     @Override
-    public <T> boolean removeEntity(T entity) throws Exception {
-        // TODO Auto-generated method stub
-        return false;
+    public <T> boolean removeEntity(T entity) {
+        return baseDao.removeEntity(entity);
     }
-
-    /*@Override
-    public <T> T getById(Class<T> clazz, int id) throws Exception {
-        return baseDao.getById(clazz, id);
-    }*/
     
     @Override
     public <T> T getById(Class<T> clazz, Serializable id){
-        try {
-            return baseDao.getById(clazz, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return baseDao.getById(clazz, id);
     }
 
     @Override
-    public int executeSql(String sql) throws Exception {
-        // TODO Auto-generated method stub
-        return 0;
+    public int excuteBySql(String scriptId,Map<String,String> param){
+        String sql = "insert into Person (address, created, phone, remark, username) values ('222', '222', '222', '2222', '2222')";
+        return baseDao.excuteBySql(sql);
     }
 
     @Override
-    public <T> List<T> executeSqlQuery(String sql) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Map<String,Object>> queryBySql(String scriptId,Map<String,String> param) {
+        String sql = "select * from person";
+        return baseDao.queryBySql(sql);
+    }
+
+    @Override
+    public <T> List<T> queryBySql(String scriptId,Map<String,String> param,Class<T> clazz){
+        String sql = "select * from person";
+        return baseDao.queryBySql(sql,clazz);
+    }
+    
+    @Override
+    public <T> PageResults<T> queryPageBySql(String scriptId,
+            Map<String, String> param, int currentPage, int pageSize,Class<T> clazz) {
+        String sql = "select * from person";
+        return baseDao.queryPageBySql(sql, 1, 5,clazz);
+    }
+    @Override
+    public PageResults<Map<String, Object>> queryPageBySql(String scriptId,
+            Map<String, String> param, int currentPage, int pageSize) {
+        String sql = "select * from person";
+        return baseDao.queryPageBySql(sql, 1, 5);
     }
 }

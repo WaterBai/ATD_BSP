@@ -2,24 +2,11 @@ package com.ssh.repository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+
+import com.ssh.entity.PageResults;
 
 public interface BaseDao{
-    
-    /**
-     * 按id加载数据
-     * @param clazz
-     * @param id
-     * @return
-     */
-    public <T> T load(Class<T> clazz,Serializable id);
-
-    /**
-     * 按id加载数据
-     * @param clazz
-     * @param id
-     * @return
-     */
-    public <T> T get(Class<T> clazz,Serializable id);
     
     /** 
      * 增加一个entity对象，返回是否添加成功 
@@ -37,7 +24,15 @@ public interface BaseDao{
      * @return boolean 
      * @throws Exception 
      * */  
-    public <T> boolean updateEntity(T entity) throws Exception;  
+    public <T> boolean updateEntity(T entity);  
+    
+    /**  
+     * 保存或修改实体的数据，返回boolean结果 
+     * @param entity 
+     * @return boolean 
+     * @throws Exception 
+     * */  
+    public <T> boolean saveOrUpdateEntity(T entity);  
    
     /**  
      * 传入要删除的实体，返回boolean结果 
@@ -45,7 +40,7 @@ public interface BaseDao{
      * @return boolean 
      * @throws Exception 
      * */  
-    public <T> boolean removeEntity(T entity) throws Exception;
+    public <T> boolean removeEntity(T entity);
  
     /**  
      * 传入要实体类的class和Serializable主键，返回具体实体 
@@ -54,7 +49,16 @@ public interface BaseDao{
      * @return T 
      * @throws Exception 
      * */  
-    public <T> T getById(Class<T> clazz,Serializable id) throws Exception;  
+    public <T> T getById(Class<T> clazz,Serializable id); 
+    
+    /**  
+     * 传入要实体类的class和Serializable主键，返回具体实体 
+     * @param clazz 
+     * @param id 
+     * @return T 
+     * @throws Exception 
+     * */  
+    public <T> T loadById(Class<T> clazz,Serializable id);  
 
     /** 
      * 执行sql语句，实行增，删，改 
@@ -63,7 +67,7 @@ public interface BaseDao{
      * @return Integer 
      * @throws Exception 
      * */  
-    public int executeSql(String sql) throws Exception;  
+    public int excuteBySql(String sql);  
     
     /**  
      * 执行sql查询语句，获取list集合 
@@ -71,6 +75,17 @@ public interface BaseDao{
      * @return List 
      * @throws Exception 
      * */  
-    public <T> List<T> executeSqlQuery(String sql) throws Exception; 
- 
+    public List<Map<String,Object>> queryBySql(String sql); 
+    public <T> List<T> queryBySql(String sql,Class<T> clazz);
+    /**  
+     * 执行sql查询分页，返回分页集合
+     * @param sql 
+     * @return List 
+     * @throws Exception 
+     * */  
+    public <T> PageResults<T> queryPageBySql(String sql, int currentPage, int pageSize, Class<T> clazz);
+    public PageResults<Map<String, Object>> queryPageBySql(String sql, int currentPage, int pageSize);
+
+    
+
 }
