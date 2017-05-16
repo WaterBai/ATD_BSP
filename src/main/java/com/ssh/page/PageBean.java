@@ -1,4 +1,4 @@
-package com.ssh.entity;
+package com.ssh.page;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @version v1.0
  * @param <T>
  */
-public class PageResults<T> {
+public class PageBean<T> {
 
     // 当前页
     private int currentPage;
@@ -26,11 +26,11 @@ public class PageResults<T> {
     // 记录
     private List<T> results;
 
-    public PageResults() {
+    public PageBean() {
         super();
     }
 
-    public PageResults(int currentPage, int pageSize, int totalCount,
+    public PageBean(int currentPage, int pageSize, int totalCount,
             List<T> results) {
         super();
         this.currentPage = currentPage;

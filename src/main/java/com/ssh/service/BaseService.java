@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.ssh.entity.PageResults;
+import com.ssh.page.PageBean;
 
 public interface BaseService {
     
@@ -78,7 +78,7 @@ public interface BaseService {
      * @param pageSize
      * @return
      */
-    public <T> PageResults<T> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize,Class<T> clazz);
-    public PageResults<Map<String, Object>> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize);
+    public <T> PageBean<T> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize,Class<T> clazz);
+    public PageBean<Map<String, Object>> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize);
 
 }

@@ -14,11 +14,11 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ssh.entity.PageResults;
-import com.ssh.repository.BaseDao;
+import com.ssh.page.PageBean;
+import com.ssh.repository.BaseRepository;
 
 @Repository
-public class BaseDaoImpl implements BaseDao {
+public class BaseRepositoryImpl implements BaseRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -140,7 +140,7 @@ public class BaseDaoImpl implements BaseDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> PageResults<T> queryPageBySql(String sql, int currentPage, int pageSize, Class<T> clazz) {
+    public <T> PageBean<T> queryPageBySql(String sql, int currentPage, int pageSize, Class<T> clazz) {
         long l = System.currentTimeMillis();
         int totalCount = 0;
         List<T> results = null;
@@ -173,13 +173,13 @@ public class BaseDaoImpl implements BaseDao {
         System.out.println((new StringBuilder()).append("查询时间:")
                 .append(System.currentTimeMillis() - l).append("ms")
                 .toString());
-        PageResults<T> page = new PageResults<T>(currentPage, pageSize,
+        PageBean<T> page = new PageBean<T>(currentPage, pageSize,
                 totalCount, results);
         return page;
     }
     @SuppressWarnings("unchecked")
     @Override
-    public PageResults<Map<String, Object>> queryPageBySql(String sql, int currentPage,
+    public PageBean<Map<String, Object>> queryPageBySql(String sql, int currentPage,
             int pageSize) {
         long l = System.currentTimeMillis();
         int totalCount = 0;
@@ -213,7 +213,7 @@ public class BaseDaoImpl implements BaseDao {
         System.out.println((new StringBuilder()).append("查询时间:")
                         .append(System.currentTimeMillis() - l).append("ms")
                         .toString());
-        PageResults<Map<String, Object>> page = new PageResults<Map<String, Object>>(currentPage, pageSize,
+        PageBean<Map<String, Object>> page = new PageBean<Map<String, Object>>(currentPage, pageSize,
                 totalCount, results);
         return page;
     }

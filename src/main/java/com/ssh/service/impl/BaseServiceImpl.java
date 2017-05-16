@@ -8,16 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssh.entity.PageResults;
-import com.ssh.entity.Person;
-import com.ssh.repository.BaseDao;
+import com.ssh.page.PageBean;
+import com.ssh.repository.BaseRepository;
 import com.ssh.service.BaseService;
 
 @Service
 @Transactional
 public class BaseServiceImpl implements BaseService{
     @Autowired
-    private BaseDao baseDao;
+    private BaseRepository baseDao;
 
     @Override
     public <T> boolean addEntity(T entity) {
@@ -58,13 +57,13 @@ public class BaseServiceImpl implements BaseService{
     }
     
     @Override
-    public <T> PageResults<T> queryPageBySql(String scriptId,
+    public <T> PageBean<T> queryPageBySql(String scriptId,
             Map<String, String> param, int currentPage, int pageSize,Class<T> clazz) {
         String sql = "select * from person";
         return baseDao.queryPageBySql(sql, 1, 5,clazz);
     }
     @Override
-    public PageResults<Map<String, Object>> queryPageBySql(String scriptId,
+    public PageBean<Map<String, Object>> queryPageBySql(String scriptId,
             Map<String, String> param, int currentPage, int pageSize) {
         String sql = "select * from person";
         return baseDao.queryPageBySql(sql, 1, 5);

@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.ssh.entity.PageResults;
+import com.ssh.page.PageBean;
 
-public interface BaseDao{
+public interface BaseRepository{
     
     /** 
      * 增加一个entity对象，返回是否添加成功 
@@ -83,8 +83,8 @@ public interface BaseDao{
      * @return List 
      * @throws Exception 
      * */  
-    public <T> PageResults<T> queryPageBySql(String sql, int currentPage, int pageSize, Class<T> clazz);
-    public PageResults<Map<String, Object>> queryPageBySql(String sql, int currentPage, int pageSize);
+    public <T> PageBean<T> queryPageBySql(String sql, int currentPage, int pageSize, Class<T> clazz);
+    public PageBean<Map<String, Object>> queryPageBySql(String sql, int currentPage, int pageSize);
 
     
 
