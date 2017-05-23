@@ -38,8 +38,7 @@ public class DynamicStatementDTDEntityResolver implements EntityResolver,
     private InputSource resolveOnClassPath(String publicId, String systemId,
             String namespace) {
         InputSource source = null;
-        String path = "com/haier/openplatform/dao/hibernate/"
-                + systemId.substring(namespace.length());
+        String path = systemId.substring(namespace.length());
         InputStream dtdStream = resolveInHibernateNamespace(path);
         if (dtdStream == null) {
             LOGGER.debug("unable to locate [" + systemId + "] on classpath");

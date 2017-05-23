@@ -18,6 +18,7 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.stereotype.Service;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
@@ -28,6 +29,7 @@ import com.ssh.resolver.DynamicStatementDTDEntityResolver;
  * @author WangXuzheng
  * 
  */
+@Service
 public class DefaultDynamicHibernateStatementBuilder implements
         DynamicHibernateStatementBuilder, ResourceLoaderAware {
     private static final Logger LOGGER = LoggerFactory
@@ -57,21 +59,12 @@ public class DefaultDynamicHibernateStatementBuilder implements
     }
 
     @Override
-    public String getHQLScript(String scriptId) {
-        return namedHQLQueries.get(scriptId);
-    }
-
-    @Override
-    public String getSQLScript(String scriptId) {
-        return namedSQLQueries.get(scriptId);
-    }
-
-    @Override
     public void init() throws IOException {
         namedHQLQueries = new HashMap<String, String>();
         namedSQLQueries = new HashMap<String, String>();
         boolean flag = this.resourceLoader instanceof ResourcePatternResolver;
         for (String file : fileNames) {
+            LOGGER.info("load sqlfile:"+file);
             if (flag) {
                 Resource[] resources = ((ResourcePatternResolver) this.resourceLoader)
                         .getResources(file);
@@ -126,6 +119,7 @@ public class DefaultDynamicHibernateStatementBuilder implements
             }
         } catch (Exception e) {
             LOGGER.error(e.toString());
+            e.printStackTrace();
             // throw new Exception(e);
         } finally {
             if (inputSource != null && inputSource.getByteStream() != null) {
@@ -133,6 +127,7 @@ public class DefaultDynamicHibernateStatementBuilder implements
                     inputSource.getByteStream().close();
                 } catch (IOException e) {
                     LOGGER.error(e.toString());
+                    e.printStackTrace();
                     // throw new Exception(e);
                 }
             }
@@ -157,6 +152,7 @@ public class DefaultDynamicHibernateStatementBuilder implements
             // throw new Exception("重复的sql-query/hql-query语句定义在文件:" +
             // resource.getURI() + "中，必须保证name的唯一.");
         }
+        LOGGER.info("load success:"+sqlQueryName);
         nameCache.add(sqlQueryName);
         String queryText = element.getText();
         statementMap.put(sqlQueryName, queryText);

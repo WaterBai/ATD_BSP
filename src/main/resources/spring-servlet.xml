@@ -19,6 +19,14 @@
 	<mvc:annotation-driven />
 	<!-- 扫描service自动注入为bean -->
 	<context:component-scan base-package="com.ssh" />
+	<bean id="dynamicStatementBuilder"
+		class="com.ssh.resolver.buildimpl.DefaultDynamicHibernateStatementBuilder">
+		<property name="fileNames">
+			<list>
+				<value>classpath:*.sql.xml</value>
+			</list>
+		</property>
+	</bean>
 	<!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -35,14 +43,7 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="dynamicStatementBuilder"
-		class="com.ssh.resolver.buildimpl.DefaultDynamicHibernateStatementBuilder">
-		<property name="fileNames">
-			<list>
-				<value>classpath:*.sql.xml</value><!--这里我们指定要加载某个文件夹下所有以-dynamic.xml结尾的文件 -->
-			</list>
-		</property>
-	</bean>
+	
 	<!-- <bean id="baseHibernateDAO"
 		class="com.ssh.repository.impl.BaseDaoImpl"
 		abstract="true">

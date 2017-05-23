@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<!DOCTYPE dynamic-hibernate-statement PUBLIC "-//Haier/HOP Hibernate Dynamic Statement DTD 1.0//EN"  
+"/dtd/dynamic-hibernate-statement-1.0.dtd">  
+<dynamic-hibernate-statement>  
+    <!-- 查询某个资源下的直接子节点 -->  
+    <hql-query name="resource.getChildren">  
+    <![CDATA[ 
+        from Resource where parent.id=${parentId} and parent.id != id 
+    ]]>   
+    </hql-query>  
+    <!-- 查询系统中所有的root资源 -->  
+    <hql-query name="resource.getRoots">  
+    <![CDATA[ 
+        from Resource where parent.id = id order by orderIndex 
+    ]]>   
+    </hql-query>  
+    <!-- 获取某个用户可访问的某个资源下的所有子资源 -->  
+    <sql-query name="test.getPerson">  
+    <![CDATA[ 
+        select * from person
+         where id = ${id} 
+         <#if username == '1'> 
+            and username='1' 
+         </#if> 
+    ]]>   
+    </sql-query>  
+</dynamic-hibernate-statement>  

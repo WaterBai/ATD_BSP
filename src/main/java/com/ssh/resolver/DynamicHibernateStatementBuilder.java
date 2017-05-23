@@ -24,10 +24,6 @@ public interface DynamicHibernateStatementBuilder {
      */
     public Map<String, String> getNamedSQLQueries();
 
-    public String getHQLScript(String scriptId);
-
-    public String getSQLScript(String scriptId);
-
     /**
      * 初始化
      * 
