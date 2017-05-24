@@ -68,4 +68,17 @@ public class BaseServiceImpl implements BaseService{
         String sql = "select * from person";
         return baseDao.queryPageBySql(sql, 1, 5);
     }
+
+    @Override
+    public List<Map<String, Object>> queryBySqlId(String sqlId,
+            Map<String, String> param) {
+        return baseDao.queryBySql(sqlId, param);
+    }
+
+    @Override
+    public <T> List<T> queryBySqlId(String sqlId, Map<String, String> param,
+            Class<T> clazz) {
+        // TODO Auto-generated method stub
+        return baseDao.queryBySql(sqlId, param, clazz);
+    }
 }

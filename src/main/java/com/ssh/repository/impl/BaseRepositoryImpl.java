@@ -264,10 +264,15 @@ public class BaseRepositoryImpl implements BaseRepository,InitializingBean {
     }
 
     @Override
-    public <T> List<T> queryBySql(String sqlId, Map<String, ?> values,
+    public <T> List<T> queryBySql(String scriptId, Map<String, ?> parameters,
             Class<T> clazz) {
-        // TODO Auto-generated method stub
-        return null;
+        StatementTemplate statementTemplate = templateCache.get(scriptId);  
+        String statement = processTemplate(statementTemplate,parameters);  
+        if(SqlType.SQL.equals(statementTemplate.getType())){  
+            return this.queryBySql(statement,clazz);   
+        }else{  
+            return null;  
+        }  
     }
 
     @Override
@@ -283,26 +288,6 @@ public class BaseRepositoryImpl implements BaseRepository,InitializingBean {
         // TODO Auto-generated method stub
         return null;
     }
-    
-    
-      
-    /*protected String processTemplate(String scriptId,Map<String, ?> parameters){  
-        try {  
-            Configuration cfg = new Configuration();  
-            StringTemplateLoader sTmpLoader = new StringTemplateLoader();  
-            sTmpLoader.putTemplate(scriptId, dynamicStatementBuilder.getSQLScript(scriptId));  
-            cfg.setTemplateLoader(sTmpLoader);  
-            cfg.setDefaultEncoding("UTF-8");  
-            Template template = cfg.getTemplate(scriptId);      
-            StringWriter writer = new StringWriter();      
-            template.process(parameters, writer);      
-            return writer.toString();  
-        } catch (TemplateException e) {  
-            throw new RuntimeException("Parse sql failed", e);  
-        } catch (IOException e) {  
-            throw new RuntimeException("Parse sql failed", e);  
-        }  
-    }*/
 
     @Override
     public void afterPropertiesSet() throws Exception {

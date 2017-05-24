@@ -68,7 +68,9 @@ public interface BaseService {
      * @return
      */
     public List<Map<String,Object>> queryBySql(String sql,Map<String,String> param); 
-    public <T> List<T> queryBySql(String scriptId,Map<String,String> param,Class<T> clazz);
+    public <T> List<T> queryBySql(String sql,Map<String,String> param,Class<T> clazz);
+    public List<Map<String,Object>> queryBySqlId(String sqlId,Map<String,String> param); 
+    public <T> List<T> queryBySqlId(String sqlId,Map<String,String> param,Class<T> clazz);
 
     /**
      * 执行sql查询分页
@@ -78,7 +80,7 @@ public interface BaseService {
      * @param pageSize
      * @return
      */
-    public <T> PageBean<T> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize,Class<T> clazz);
-    public PageBean<Map<String, Object>> queryPageBySql(String queryId, Map<String,String> param, int currentPage, int pageSize);
+    public <T> PageBean<T> queryPageBySql(String sql, Map<String,String> param, int currentPage, int pageSize,Class<T> clazz);
+    public PageBean<Map<String, Object>> queryPageBySql(String sql, Map<String,String> param, int currentPage, int pageSize);
 
 }

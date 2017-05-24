@@ -20,17 +20,17 @@ public class DynamicStatementDTDEntityResolver implements EntityResolver,
     private static final long serialVersionUID = 8123799007554762965L;
     private static final Logger LOGGER = LoggerFactory
             .getLogger(DynamicStatementDTDEntityResolver.class);
-    private static final String HOP_DYNAMIC_STATEMENT = "/dtd/";
+    private static final String HOP_DYNAMIC_STATEMENT = "http://www.haier.com/";
 
     public InputSource resolveEntity(String publicId, String systemId) {
         InputSource source = null; // returning null triggers default behavior
         if (systemId != null) {
             LOGGER.debug("trying to resolve system-id [" + systemId + "]");
-            if (systemId.startsWith(HOP_DYNAMIC_STATEMENT)) {
+            //if (systemId.startsWith(HOP_DYNAMIC_STATEMENT)) {
                 LOGGER.debug("recognized hop dyanmic statement namespace; attempting to resolve on classpath under com/haier/openplatform/dao/hibernate/");
                 source = resolveOnClassPath(publicId, systemId,
                         HOP_DYNAMIC_STATEMENT);
-            }
+            //}
         }
         return source;
     }

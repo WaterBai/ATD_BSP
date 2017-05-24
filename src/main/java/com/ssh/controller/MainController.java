@@ -1,6 +1,7 @@
 package com.ssh.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +34,15 @@ public class MainController {
     @ResponseBody
     public String testBaseAdd() {
         PersonTest person = new PersonTest();
+        System.out.println(person.toString());
         person.setUsername("XRog");
         person.setPhone("18381005946");
         person.setAddress("chenDu");
         person.setRemark("this is XRog");
+        System.out.println(person.toString());
         boolean b = baseService.addEntity(person);
-        return b + "";
+        System.out.println(person.toString());
+        return b + "</br>"+person.toString();
     }
 
     @RequestMapping(value = "testBaseGetById", method = RequestMethod.GET)
@@ -83,6 +87,32 @@ public class MainController {
     @ResponseBody
     public String testBaseQuerySql2() {
         List<PersonTest> result = baseService.queryBySql(null, null, PersonTest.class);
+        for (PersonTest person : result) {
+            System.out.println(person.toString());
+        }
+        return result.toString();
+    }
+    
+    @RequestMapping(value = "testBaseQuerySql3", method = RequestMethod.GET)
+    @ResponseBody
+    public String testBaseQuerySql3() {
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("id", "2");
+        param.put("username", "2");
+        List<Map<String, Object>> result = baseService.queryBySqlId("test.getPerson", param);
+        for (Map<String, Object> person : result) {
+            System.out.println(person.toString());
+        }
+        return result.toString();
+    }
+    
+    @RequestMapping(value = "testBaseQuerySql4", method = RequestMethod.GET)
+    @ResponseBody
+    public String testBaseQuerySql4() {
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("id", "2");
+        param.put("username", "1");
+        List<PersonTest> result = baseService.queryBySqlId("test.getPerson", param, PersonTest.class);
         for (PersonTest person : result) {
             System.out.println(person.toString());
         }
