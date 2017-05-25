@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssh.entity.PersonTest;
 import com.ssh.page.PageBean;
-import com.ssh.service.BaseService;
+import com.ssh.service.TestService;
 
 @Controller
 public class MainController {
 
 
     @Autowired
-    private BaseService baseService;
+    private TestService baseService;
 
 
     @RequestMapping(value = "springtest", method = RequestMethod.GET)

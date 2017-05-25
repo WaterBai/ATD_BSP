@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssh.page.PageBean;
 import com.ssh.repository.BaseRepository;
-import com.ssh.service.BaseService;
+import com.ssh.service.TestService;
 
 @Service
 @Transactional
-public class BaseServiceImpl implements BaseService{
+public class TestServiceImpl implements TestService{
     @Autowired
     private BaseRepository baseDao;
 

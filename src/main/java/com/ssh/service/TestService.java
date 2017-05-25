@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.ssh.page.PageBean;
 
-public interface BaseService {
+public interface TestService {
     
     /** 
      * 增加一个entity对象，返回是否添加成功 

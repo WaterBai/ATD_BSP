@@ -1,11 +1,9 @@
 package com.ssh.repository.impl;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,22 +18,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.ssh.entity.SqlType;
-import com.ssh.entity.StatementTemplate;
+import com.ssh.db.SqlType;
+import com.ssh.db.StatementTemplate;
+import com.ssh.db.resolver.DynamicHibernateStatementBuilder;
 import com.ssh.page.PageBean;
 import com.ssh.repository.BaseRepository;
-import com.ssh.resolver.DynamicHibernateStatementBuilder;
 
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 @Repository
-public class BaseRepositoryImpl implements BaseRepository,InitializingBean {
+public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     private static final Logger LOGER = LoggerFactory
             .getLogger(BaseRepositoryImpl.class);
@@ -43,7 +39,7 @@ public class BaseRepositoryImpl implements BaseRepository,InitializingBean {
      * 模板缓存
      */
     protected Map<String, StatementTemplate> templateCache;
-    
+
     @Autowired
     protected DynamicHibernateStatementBuilder dynamicStatementBuilder;
 
@@ -252,39 +248,41 @@ public class BaseRepositoryImpl implements BaseRepository,InitializingBean {
     }
 
     @Override
-    public List<Map<String, Object>> queryBySql(String scriptId, Map<String, ?> parameters) {
-        //String statement = processTemplate(scriptId,parameters);  
-        StatementTemplate statementTemplate = templateCache.get(scriptId);  
-        String statement = processTemplate(statementTemplate,parameters);  
-        if(SqlType.SQL.equals(statementTemplate.getType())){  
-            return this.queryBySql(statement);   
-        }else{  
-            return null;  
-        }  
+    public List<Map<String, Object>> queryBySql(String scriptId,
+            Map<String, ?> parameters) {
+        // String statement = processTemplate(scriptId,parameters);
+        StatementTemplate statementTemplate = templateCache.get(scriptId);
+        String statement = processTemplate(statementTemplate, parameters);
+        if (SqlType.SQL.equals(statementTemplate.getType())) {
+            return this.queryBySql(statement);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public <T> List<T> queryBySql(String scriptId, Map<String, ?> parameters,
             Class<T> clazz) {
-        StatementTemplate statementTemplate = templateCache.get(scriptId);  
-        String statement = processTemplate(statementTemplate,parameters);  
-        if(SqlType.SQL.equals(statementTemplate.getType())){  
-            return this.queryBySql(statement,clazz);   
-        }else{  
-            return null;  
-        }  
+        StatementTemplate statementTemplate = templateCache.get(scriptId);
+        String statement = processTemplate(statementTemplate, parameters);
+        if (SqlType.SQL.equals(statementTemplate.getType())) {
+            return this.queryBySql(statement, clazz);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public <T> PageBean<T> queryPageBySql(String scriptId, Map<String, ?> parameters,
-            int currentPage, int pageSize, Class<T> clazz) {
-        StatementTemplate statementTemplate = templateCache.get(scriptId);  
-        String statement = processTemplate(statementTemplate,parameters);  
-        if(SqlType.SQL.equals(statementTemplate.getType())){  
+    public <T> PageBean<T> queryPageBySql(String scriptId,
+            Map<String, ?> parameters, int currentPage, int pageSize,
+            Class<T> clazz) {
+        StatementTemplate statementTemplate = templateCache.get(scriptId);
+        String statement = processTemplate(statementTemplate, parameters);
+        if (SqlType.SQL.equals(statementTemplate.getType())) {
             return this.queryPageBySql(statement, currentPage, pageSize, clazz);
-        }else{  
-            return null;  
-        }  
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -296,34 +294,42 @@ public class BaseRepositoryImpl implements BaseRepository,InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        templateCache = new HashMap<String, StatementTemplate>();  
-        if(this.dynamicStatementBuilder == null){  
-            throw new RuntimeException("dynamicStatementBuilder is null !!");  
-        }  
-        dynamicStatementBuilder.init();  
-        Map<String,String> namedHQLQueries = dynamicStatementBuilder.getNamedHQLQueries();  
-        Map<String,String> namedSQLQueries = dynamicStatementBuilder.getNamedSQLQueries();  
-        Configuration configuration = new Configuration();  
-        configuration.setNumberFormat("#");  
-        StringTemplateLoader stringLoader = new StringTemplateLoader();  
-        for(Entry<String, String> entry : namedHQLQueries.entrySet()){  
-            stringLoader.putTemplate(entry.getKey(), entry.getValue());  
-            templateCache.put(entry.getKey(), new StatementTemplate(SqlType.HQL,new Template(entry.getKey(),new StringReader(entry.getValue()),configuration)));  
-        }  
-        for(Entry<String, String> entry : namedSQLQueries.entrySet()){  
-            stringLoader.putTemplate(entry.getKey(), entry.getValue());  
-            templateCache.put(entry.getKey(), new StatementTemplate(SqlType.SQL,new Template(entry.getKey(),new StringReader(entry.getValue()),configuration)));  
-        }  
-        configuration.setTemplateLoader(stringLoader);  
+        templateCache = new HashMap<String, StatementTemplate>();
+        if (this.dynamicStatementBuilder == null) {
+            throw new RuntimeException("dynamicStatementBuilder is null !!");
+        }
+        dynamicStatementBuilder.init();
+        Map<String, String> namedHQLQueries = dynamicStatementBuilder
+                .getNamedHQLQueries();
+        Map<String, String> namedSQLQueries = dynamicStatementBuilder
+                .getNamedSQLQueries();
+        Configuration configuration = new Configuration();
+        configuration.setNumberFormat("#");
+        StringTemplateLoader stringLoader = new StringTemplateLoader();
+        for (Entry<String, String> entry : namedHQLQueries.entrySet()) {
+            stringLoader.putTemplate(entry.getKey(), entry.getValue());
+            templateCache.put(entry.getKey(), new StatementTemplate(
+                    SqlType.HQL, new Template(entry.getKey(), new StringReader(
+                            entry.getValue()), configuration)));
+        }
+        for (Entry<String, String> entry : namedSQLQueries.entrySet()) {
+            stringLoader.putTemplate(entry.getKey(), entry.getValue());
+            templateCache.put(entry.getKey(), new StatementTemplate(
+                    SqlType.SQL, new Template(entry.getKey(), new StringReader(
+                            entry.getValue()), configuration)));
+        }
+        configuration.setTemplateLoader(stringLoader);
     }
-    protected String processTemplate(StatementTemplate statementTemplate,Map<String, ?> parameters){  
-        StringWriter stringWriter = new StringWriter();  
-        try {  
-            statementTemplate.getTemplate().process(parameters, stringWriter);  
-        } catch (Exception e) {  
-            LOGER.error("处理DAO查询参数模板时发生错误：{}",e.toString());  
+
+    protected String processTemplate(StatementTemplate statementTemplate,
+            Map<String, ?> parameters) {
+        StringWriter stringWriter = new StringWriter();
+        try {
+            statementTemplate.getTemplate().process(parameters, stringWriter);
+        } catch (Exception e) {
+            LOGER.error("处理DAO查询参数模板时发生错误：{}", e.toString());
             e.printStackTrace();
-        }  
-        return stringWriter.toString();  
-    }  
+        }
+        return stringWriter.toString();
+    }
 }
