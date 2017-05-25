@@ -286,10 +286,15 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public PageBean<Map<String, Object>> queryPageBySql(String sqlId,
-            Map<String, ?> values, int currentPage, int pageSize) {
-        // TODO Auto-generated method stub
-        return null;
+    public PageBean<Map<String, Object>> queryPageBySql(String scriptId,
+            Map<String, ?> parameters, int currentPage, int pageSize) {
+        StatementTemplate statementTemplate = templateCache.get(scriptId);
+        String statement = processTemplate(statementTemplate, parameters);
+        if (SqlType.SQL.equals(statementTemplate.getType())) {
+            return this.queryPageBySql(statement, currentPage, pageSize);
+        } else {
+            return null;
+        }
     }
 
     @Override

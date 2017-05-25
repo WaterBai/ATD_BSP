@@ -11,16 +11,16 @@
  -->  
   
 <!ELEMENT dynamic-hibernate-statement (  
-    (hql-query|sql-query)*  
+    (hql|sql)*  
 )>  
 <!-- default: none -->  
   
 <!-- The query element declares a named Hibernate query string -->  
   
-<!ELEMENT hql-query (#PCDATA)>  
-    <!ATTLIST hql-query name CDATA #REQUIRED>  
+<!ELEMENT hql (#PCDATA)>  
+    <!ATTLIST hql key CDATA #REQUIRED>  
   
 <!-- The sql-query element declares a named SQL query string -->  
   
-<!ELEMENT sql-query (#PCDATA)>  
-    <!ATTLIST sql-query name CDATA #REQUIRED>  
+<!ELEMENT sql (#PCDATA)>  
+    <!ATTLIST sql key CDATA #REQUIRED>  

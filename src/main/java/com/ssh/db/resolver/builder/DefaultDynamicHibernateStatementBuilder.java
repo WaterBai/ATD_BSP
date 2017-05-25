@@ -109,10 +109,10 @@ public class DefaultDynamicHibernateStatementBuilder implements
                 while (rootChildren.hasNext()) {
                     final Element element = (Element) rootChildren.next();
                     final String elementName = element.getName();
-                    if ("sql-query".equals(elementName)) {
+                    if ("sql".equals(elementName)) {
                         putStatementToCacheMap(resource, element,
                                 namedSQLQueries);
-                    } else if ("hql-query".equals(elementName)) {
+                    } else if ("hql".equals(elementName)) {
                         putStatementToCacheMap(resource, element,
                                 namedHQLQueries);
                     }
@@ -139,24 +139,20 @@ public class DefaultDynamicHibernateStatementBuilder implements
     private void putStatementToCacheMap(Resource resource,
             final Element element, Map<String, String> statementMap)
             throws IOException {
-        String sqlQueryName = element.attribute("name").getText();
-        // Validate.notEmpty(sqlQueryName);
+        String sqlQueryName = element.attribute("key").getText();
         if ("".equals(sqlQueryName) || sqlQueryName == null) {
-            LOGGER.error("sql-query/hql-query语句定义在文件:" + resource.getURI()
+            LOGGER.error("sql/hql语句定义在文件:" + resource.getURI()
                     + "中，有空的id，必须保证id的唯一.");
             return;
-        }
-        if (nameCache.contains(sqlQueryName)) {
-            LOGGER.error("sql-query/hql-query语句定义在文件:" + resource.getURI()
+        }else if (nameCache.contains(sqlQueryName)) {
+            LOGGER.error("sql/hql语句定义在文件:" + resource.getURI()
                     + "中，有重复的id：" + sqlQueryName + "，必须保证id的唯一.");
             return;
-            // throw new Exception("重复的sql-query/hql-query语句定义在文件:" +
-            // resource.getURI() + "中，必须保证name的唯一.");
         }
-        LOGGER.info("load success:"+sqlQueryName);
         nameCache.add(sqlQueryName);
         String queryText = element.getText();
         statementMap.put(sqlQueryName, queryText);
+        LOGGER.info("load success:"+sqlQueryName);
     }
 
     private static boolean isDynamicStatementXml(XmlDocument xmlDocument) {
