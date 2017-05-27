@@ -73,6 +73,13 @@ body {
 		</ul>
 		<iframe id="mainFrame" name="mainFrame" scrolling="no" src = "home.do"
             frameborder="0" style="padding: 0px; width: 100%;"></iframe>
+        <!-- <footer>
+			<hr>
+			<p class="pull-right"> Edit by 
+			<a href="https://github.com/WaterBai/" title="WaterBAI" target="_blank">WaterBAI</a>
+			</p>
+			<p>&copy; 2017</p>
+		</footer> -->
 	</div>
 </body>
 <script type="text/javascript">
@@ -94,17 +101,6 @@ function reinitIframe() {
     } catch (ex) {}  
 }
 window.setInterval("reinitIframe()", 200);
-
-function addBreadCrumb(bc,url){
-	$(".breadcrumb").find("li .active").each( function(index) {
-		$(this).removeClass("active");
-		$("#li_detail").find("ul").append('<li><a href="#'+id+'">' + $(this).text() + '</a></li>');
-	});
-	$(".breadcrumb").append("<li class='active'><a href='"+url+"' target='mainFrame'>"+bc+"</a>");
-}
-function clearBreadCrumb(){
-	$(".breadcrumb").empty();
-}
 
 </script>
 </html>

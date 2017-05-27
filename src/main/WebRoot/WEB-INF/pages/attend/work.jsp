@@ -27,16 +27,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    </div>
 			</div>
 		</div>
-		
-		
-		<footer>
-			<hr>
-			<p class="pull-right">
-				Edit by <a href="https://github.com/WaterBai/" title="WaterBAI"
-					target="_blank">WaterBAI</a>
-			</p>
-			<p>&copy; 2017</p>
-		</footer>
 	</div>
 </body>
 </html>
