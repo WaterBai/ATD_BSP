@@ -16,7 +16,7 @@ import com.ssh.page.PageBean;
 import com.ssh.service.TestService;
 
 @Controller
-public class MainController {
+public class TestController {
 
 
     @Autowired
