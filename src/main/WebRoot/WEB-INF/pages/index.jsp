@@ -71,7 +71,7 @@ body {
 			<li class="active"><a href="home.do" target="mainFrame">Home</a>
 			<!-- <li class="active">Dashboard</li> -->
 		</ul>
-		<iframe id="mainFrame" name="mainFrame" scrolling="no" src = "home.do"
+		<iframe id="mainFrame" name="mainFrame" src = "home.do"
             frameborder="0" style="padding: 0px; width: 100%;"></iframe>
         <!-- <footer>
 			<hr>
@@ -93,10 +93,11 @@ $(document).ready(function() {
 function reinitIframe() { 
     var iframe = document.getElementById("mainFrame");  
     try {  
-        var bHeight = iframe.contentWindow.document.body.scrollHeight;  
+    	var bHeight = document.documentElement.clientHeight-100;
+        //var bHeight = iframe.contentWindow.document.body.scrollHeight;  
         var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;  
-        //var height = Math.max(bHeight, dHeight);  
-        var height = dHeight;  
+        var height = Math.max(bHeight, dHeight);  
+        //var height = bHeight;  
         iframe.height = height;  
     } catch (ex) {}  
 }
