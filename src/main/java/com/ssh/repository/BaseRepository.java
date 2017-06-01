@@ -68,6 +68,7 @@ public interface BaseRepository{
      * @throws Exception 
      * */  
     public int excuteBySql(String sql);  
+    public int excuteBySqlId(String sql,Map<String, ?> values);  
     
     
     /**  
@@ -77,20 +78,22 @@ public interface BaseRepository{
      * @throws Exception 
      * */  
     public List<Map<String,Object>> queryBySql(String sql); 
-    public List<Map<String,Object>> queryBySql(String sqlId,Map<String, ?> values);  
+    public List<Map<String,Object>> queryBySqlId(String sqlId,Map<String, ?> values);  
     public <T> List<T> queryBySql(String sql,Class<T> clazz);
-    public <T> List<T> queryBySql(String sqlId,Map<String, ?> values,Class<T> clazz);
+    public <T> List<T> queryBySqlId(String sqlId,Map<String, ?> values,Class<T> clazz);
     /**  
      * 执行sql查询分页，返回分页集合
      * @param sql 
      * @return List 
      * @throws Exception 
      * */  
-    public <T> PageBean<T> queryPageBySql(String sql, int currentPage, int pageSize, Class<T> clazz);
-    public <T> PageBean<T> queryPageBySql(String sqlId,Map<String, ?> values, int currentPage, int pageSize, Class<T> clazz);
-    public PageBean<Map<String, Object>> queryPageBySql(String sql, int currentPage, int pageSize);
-    public PageBean<Map<String, Object>> queryPageBySql(String sqlId,Map<String, ?> values, int currentPage, int pageSize);
-
-    
+    public <T> List<T> queryPageBySql(String sql, int currentPage, int pageSize, Class<T> clazz);
+    public <T> List<T> queryPageBySqlId(String sqlId,Map<String, ?> values, int currentPage, int pageSize, Class<T> clazz);
+    public List<Map<String, Object>> queryPageBySql(String sql, int currentPage, int pageSize);
+    public List<Map<String, Object>> queryPageBySqlId(String sqlId,Map<String, ?> values, int currentPage, int pageSize);
+    public <T> PageBean<T> queryPageBeanBySql(String sql, int currentPage, int pageSize, Class<T> clazz);
+    public <T> PageBean<T> queryPageBeanBySqlId(String sqlId,Map<String, ?> values, int currentPage, int pageSize, Class<T> clazz);
+    public PageBean<Map<String, Object>> queryPageBeanBySql(String sql, int currentPage, int pageSize);
+    public PageBean<Map<String, Object>> queryPageBeanBySqlId(String sqlId,Map<String, ?> values, int currentPage, int pageSize);
 
 }

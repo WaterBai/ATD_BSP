@@ -24,6 +24,7 @@ import com.ssh.db.SqlType;
 import com.ssh.db.StatementTemplate;
 import com.ssh.db.resolver.DynamicHibernateStatementBuilder;
 import com.ssh.page.PageBean;
+import com.ssh.page.PageSql;
 import com.ssh.repository.BaseRepository;
 
 import freemarker.cache.StringTemplateLoader;
@@ -33,7 +34,7 @@ import freemarker.template.Template;
 @Repository
 public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
-    private static final Logger LOGER = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(BaseRepositoryImpl.class);
     /**
      * 模板缓存
@@ -135,6 +136,17 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
         return result;
     }
 
+    @Override
+    public int excuteBySqlId(String scriptId, Map<String, ?> parameters) {
+        StatementTemplate statementTemplate = templateCache.get(scriptId);
+        String statement = processTemplate(statementTemplate, parameters);
+        if (SqlType.SQL.equals(statementTemplate.getType())) {
+            return this.excuteBySql(statement);
+        } else {
+            return 0;
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public <T> List<T> queryBySql(String sql, Class<T> clazz) {
@@ -165,41 +177,26 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> PageBean<T> queryPageBySql(String sql, int currentPage,
+    public <T> PageBean<T> queryPageBeanBySql(String sql, int currentPage,
             int pageSize, Class<T> clazz) {
+        PageSql pagesql = new PageSql(sql, currentPage, pageSize);
         long l = System.currentTimeMillis();
-        int totalCount = 0;
         List<T> results = null;
-        String countSql = (new StringBuilder())
-                .append("SELECT COUNT(1) FROM (").append(sql).append(") T")
-                .toString();
+        String countSql = pagesql.getCountSql();
         Query query = this.getCurrentSession().createSQLQuery(countSql);
         List<BigInteger> list = query.list();
-        totalCount = list.get(0).intValue();
-        System.out
-                .println((new StringBuilder()).append("查询时间:")
-                        .append(System.currentTimeMillis() - l).append("ms")
-                        .toString());
+        int totalCount = list.get(0).intValue();
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
         l = System.currentTimeMillis();
         if (totalCount > 0) {
-            if (currentPage < 1)
-                currentPage = 1;
-            int min = (currentPage - 1) * pageSize + 1;
-            int max = currentPage * pageSize;
-            if (totalCount < min) {
-                currentPage = 1;
-                min = 1;
-                max = pageSize;
-            }
-            String limitSql = (new StringBuilder()).append("SELECT * FROM (")
-                    .append(sql).append(") T_T LIMIT ").append(min - 1)
-                    .append(",").append((max - min) + 1).toString();
+            String limitSql = pagesql.getLimitSql();
             results = this.queryBySql(limitSql, clazz);
+        } else {
+            LOGGER.info("Result is null!");
         }
-        System.out
-                .println((new StringBuilder()).append("查询时间:")
-                        .append(System.currentTimeMillis() - l).append("ms")
-                        .toString());
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
         PageBean<T> page = new PageBean<T>(currentPage, pageSize, totalCount,
                 results);
         return page;
@@ -207,50 +204,35 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @SuppressWarnings("unchecked")
     @Override
-    public PageBean<Map<String, Object>> queryPageBySql(String sql,
+    public PageBean<Map<String, Object>> queryPageBeanBySql(String sql,
             int currentPage, int pageSize) {
+        // 封装查询sql的类，以便获取相应的sql
+        PageSql pagesql = new PageSql(sql, currentPage, pageSize);
         long l = System.currentTimeMillis();
-        int totalCount = 0;
         List<Map<String, Object>> results = null;
-        String countSql = (new StringBuilder())
-                .append("SELECT COUNT(1) FROM (").append(sql).append(") T")
-                .toString();
+        String countSql = pagesql.getCountSql();
         Query query = this.getCurrentSession().createSQLQuery(countSql);
         List<BigInteger> list = query.list();
-        totalCount = list.get(0).intValue();
-        System.out
-                .println((new StringBuilder()).append("查询时间:")
-                        .append(System.currentTimeMillis() - l).append("ms")
-                        .toString());
+        int totalCount = list.get(0).intValue();
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
         l = System.currentTimeMillis();
-        if (totalCount > 0) {
-            if (currentPage < 1)
-                currentPage = 1;
-            int min = (currentPage - 1) * pageSize + 1;
-            int max = currentPage * pageSize;
-            if (totalCount < min) {
-                currentPage = 1;
-                min = 1;
-                max = pageSize;
-            }
-            String limitSql = (new StringBuilder()).append("SELECT * FROM (")
-                    .append(sql).append(") T_T LIMIT ").append(min - 1)
-                    .append(",").append((max - min) + 1).toString();
+        String limitSql = pagesql.getLimitSql(totalCount);
+        if (pagesql.getTotalCount() > 0) {
             results = this.queryBySql(limitSql);
+        } else {
+            LOGGER.info("Result is null!");
         }
-        System.out
-                .println((new StringBuilder()).append("查询时间:")
-                        .append(System.currentTimeMillis() - l).append("ms")
-                        .toString());
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
         PageBean<Map<String, Object>> page = new PageBean<Map<String, Object>>(
                 currentPage, pageSize, totalCount, results);
         return page;
     }
 
     @Override
-    public List<Map<String, Object>> queryBySql(String scriptId,
+    public List<Map<String, Object>> queryBySqlId(String scriptId,
             Map<String, ?> parameters) {
-        // String statement = processTemplate(scriptId,parameters);
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
@@ -261,7 +243,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public <T> List<T> queryBySql(String scriptId, Map<String, ?> parameters,
+    public <T> List<T> queryBySqlId(String scriptId, Map<String, ?> parameters,
             Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
@@ -273,23 +255,100 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public <T> PageBean<T> queryPageBySql(String scriptId,
+    public <T> PageBean<T> queryPageBeanBySqlId(String scriptId,
             Map<String, ?> parameters, int currentPage, int pageSize,
             Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
-            return this.queryPageBySql(statement, currentPage, pageSize, clazz);
+            return this.queryPageBeanBySql(statement, currentPage, pageSize,
+                    clazz);
         } else {
             return null;
         }
     }
 
     @Override
-    public PageBean<Map<String, Object>> queryPageBySql(String scriptId,
+    public PageBean<Map<String, Object>> queryPageBeanBySqlId(String scriptId,
             Map<String, ?> parameters, int currentPage, int pageSize) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
+        if (SqlType.SQL.equals(statementTemplate.getType())) {
+            return this.queryPageBeanBySql(statement, currentPage, pageSize);
+        } else {
+            return null;
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> List<T> queryPageBySql(String sql, int currentPage,
+            int pageSize, Class<T> clazz) {
+        PageSql pagesql = new PageSql(sql, currentPage, pageSize);
+        long l = System.currentTimeMillis();
+        List<T> results = null;
+        String countSql = pagesql.getCountSql();
+        Query query = this.getCurrentSession().createSQLQuery(countSql);
+        List<BigInteger> list = query.list();
+        int totalCount = list.get(0).intValue();
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
+        l = System.currentTimeMillis();
+        if (totalCount > 0) {
+            String limitSql = pagesql.getLimitSql();
+            results = this.queryBySql(limitSql, clazz);
+        } else {
+            LOGGER.info("Result is null!");
+        }
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
+        return results;
+    }
+
+    @Override
+    public <T> List<T> queryPageBySqlId(String sqlId, Map<String, ?> values,
+            int currentPage, int pageSize, Class<T> clazz) {
+        StatementTemplate statementTemplate = templateCache.get(sqlId);
+        String statement = processTemplate(statementTemplate, values);
+        if (SqlType.SQL.equals(statementTemplate.getType())) {
+            return this.queryPageBySql(statement, currentPage, pageSize,clazz);
+        } else {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Map<String, Object>> queryPageBySql(String sql,
+            int currentPage, int pageSize) {
+     // 封装查询sql的类，以便获取相应的sql
+        PageSql pagesql = new PageSql(sql, currentPage, pageSize);
+        long l = System.currentTimeMillis();
+        List<Map<String, Object>> results = null;
+        String countSql = pagesql.getCountSql();
+        Query query = this.getCurrentSession().createSQLQuery(countSql);
+
+        List<BigInteger> list = query.list();
+        int totalCount = list.get(0).intValue();
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
+        l = System.currentTimeMillis();
+        String limitSql = pagesql.getLimitSql(totalCount);
+        if (pagesql.getTotalCount() > 0) {
+            results = this.queryBySql(limitSql);
+        } else {
+            LOGGER.info("Result is null!");
+        }
+        LOGGER.info((new StringBuilder()).append("查询时间:")
+                .append(System.currentTimeMillis() - l).append("ms").toString());
+        return results;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryPageBySqlId(String sqlId,
+            Map<String, ?> values, int currentPage, int pageSize) {
+        StatementTemplate statementTemplate = templateCache.get(sqlId);
+        String statement = processTemplate(statementTemplate, values);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
             return this.queryPageBySql(statement, currentPage, pageSize);
         } else {
@@ -332,9 +391,11 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
         try {
             statementTemplate.getTemplate().process(parameters, stringWriter);
         } catch (Exception e) {
-            LOGER.error("处理DAO查询参数模板时发生错误：{}", e.toString());
+            LOGGER.error("处理DAO查询参数模板时发生错误：{}", e.toString());
             e.printStackTrace();
         }
         return stringWriter.toString();
     }
+
+
 }

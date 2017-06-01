@@ -13,6 +13,7 @@
 		<servletVersion>3.0-alpha-1</servletVersion>
 		<jsonVersion>1.9.13</jsonVersion>
 		<jacksonVersion>2.5.0</jacksonVersion>
+		<netsfjson>2.4</netsfjson>
 		<mysqlVersion>5.1.34</mysqlVersion>
 		<c3p0Version>0.9.1.2</c3p0Version>
 		<log4jVersion>1.7.2</log4jVersion>
@@ -120,10 +121,16 @@
 		</dependency>
 
 		<!-- json数据 使springMVC可以返回json值 ,视情况添加 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jsonVersion}</version>
+		</dependency> -->
+		<dependency>  
+		    <groupId>net.sf.json-lib</groupId>  
+		    <artifactId>json-lib</artifactId>  
+		    <version>${netsfjson}</version>  
+		    <classifier>jdk15</classifier>  
 		</dependency>
 
 		<!-- Jackson可以轻松的将Java对象转换成json对象和xml文档,同样也可以将json、xml转换成Java对象 -->
@@ -145,11 +152,6 @@
 		</dependency>
 
 		<!-- log4j配置, 视情况添加 -->
-		<!-- <dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4jVersion}</version>
-		</dependency> -->
 		<dependency>  
 		    <groupId>org.slf4j</groupId>  
 		    <artifactId>slf4j-log4j12</artifactId>  

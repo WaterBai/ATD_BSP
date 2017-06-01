@@ -13,7 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>ATTEND LOGIN</title>
 <%@ include file="/include.jsp"%>
 <style type="text/css">
-.dialog, .row .dialog {
+/* .dialog, .row .dialog {
 	margin-top: 5em;
 }
 
@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 .dialog .remember-me, .row .dialog .remember-me {
 	padding: .5em 0em 0em 0em;
-}
+} */
 </style>
 
 </head>
@@ -67,6 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<label for="password">Password</label> 
 								<input type="password" class="form-control" name="password" id="password" placeholder="Password">
 							</div>
+							<input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+							<input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked>
 							<label class="remember-me"><input type="checkbox">Remember me</label>
 							<button type="submit" class="btn btn-primary pull-right">Sign In</button>
 							<div class="clearfix"></div>

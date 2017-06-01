@@ -60,25 +60,25 @@ public class TestServiceImpl implements TestService{
     public <T> PageBean<T> queryPageBySql(String scriptId,
             Map<String, String> param, int currentPage, int pageSize,Class<T> clazz) {
         String sql = "select * from person";
-        return baseDao.queryPageBySql(sql, 1, 5,clazz);
+        return baseDao.queryPageBeanBySql(sql, 1, 5,clazz);
     }
     @Override
     public PageBean<Map<String, Object>> queryPageBySql(String scriptId,
             Map<String, String> param, int currentPage, int pageSize) {
         String sql = "select * from person";
-        return baseDao.queryPageBySql(sql, 1, 5);
+        return baseDao.queryPageBeanBySql(sql, 1, 5);
     }
 
     @Override
     public List<Map<String, Object>> queryBySqlId(String sqlId,
             Map<String, String> param) {
-        return baseDao.queryBySql(sqlId, param);
+        return baseDao.queryBySqlId(sqlId, param);
     }
 
     @Override
     public <T> List<T> queryBySqlId(String sqlId, Map<String, String> param,
             Class<T> clazz) {
         // TODO Auto-generated method stub
-        return baseDao.queryBySql(sqlId, param, clazz);
+        return baseDao.queryBySqlId(sqlId, param, clazz);
     }
 }

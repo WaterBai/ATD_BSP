@@ -52,9 +52,9 @@
 				</div>
 			</div>
 			<div class="col-md-12">
-				<div class="btn-group">
+				<div class="btn-toolbar">
 					<button class="btn btn-primary">
-						<i class="icon-plus"></i> New User
+						<i class="fa fa-plus"></i> New User
 					</button>
 					<button class="btn">Import</button>
 					<button class="btn">Export</button>
