@@ -137,7 +137,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public int excuteBySqlId(String scriptId, Map<String, ?> parameters) {
+    public int excuteBySqlId(String scriptId, Map<String, String> parameters) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
@@ -190,7 +190,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
                 .append(System.currentTimeMillis() - l).append("ms").toString());
         l = System.currentTimeMillis();
         if (totalCount > 0) {
-            String limitSql = pagesql.getLimitSql();
+            String limitSql = pagesql.getLimitSql(totalCount);
             results = this.queryBySql(limitSql, clazz);
         } else {
             LOGGER.info("Result is null!");
@@ -232,7 +232,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public List<Map<String, Object>> queryBySqlId(String scriptId,
-            Map<String, ?> parameters) {
+            Map<String, String> parameters) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
@@ -243,7 +243,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public <T> List<T> queryBySqlId(String scriptId, Map<String, ?> parameters,
+    public <T> List<T> queryBySqlId(String scriptId, Map<String, String> parameters,
             Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
@@ -256,7 +256,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public <T> PageBean<T> queryPageBeanBySqlId(String scriptId,
-            Map<String, ?> parameters, int currentPage, int pageSize,
+            Map<String, String> parameters, int currentPage, int pageSize,
             Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
@@ -270,7 +270,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public PageBean<Map<String, Object>> queryPageBeanBySqlId(String scriptId,
-            Map<String, ?> parameters, int currentPage, int pageSize) {
+            Map<String, String> parameters, int currentPage, int pageSize) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
@@ -306,7 +306,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public <T> List<T> queryPageBySqlId(String sqlId, Map<String, ?> values,
+    public <T> List<T> queryPageBySqlId(String sqlId, Map<String, String> values,
             int currentPage, int pageSize, Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(sqlId);
         String statement = processTemplate(statementTemplate, values);
@@ -346,7 +346,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public List<Map<String, Object>> queryPageBySqlId(String sqlId,
-            Map<String, ?> values, int currentPage, int pageSize) {
+            Map<String, String> values, int currentPage, int pageSize) {
         StatementTemplate statementTemplate = templateCache.get(sqlId);
         String statement = processTemplate(statementTemplate, values);
         if (SqlType.SQL.equals(statementTemplate.getType())) {

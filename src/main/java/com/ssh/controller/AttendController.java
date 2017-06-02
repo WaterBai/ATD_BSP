@@ -1,16 +1,17 @@
 package com.ssh.controller;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssh.entity.Attend;
 import com.ssh.page.PageBean;
-import com.ssh.repository.impl.BaseRepositoryImpl;
 import com.ssh.service.AttendService;
 import com.ssh.service.TestService;
 import com.ssh.util.JsonUtil;
@@ -28,40 +29,35 @@ public class AttendController {
 
     /*
      * @RequestMapping(value = "index") public String index() {
-     * LOGGER.debug("index"); // 实际返回的是views/test.jsp ,spring-mvc.xml中配置过前后缀
+     * LOGGER.info("index"); // 实际返回的是views/test.jsp ,spring-mvc.xml中配置过前后缀
      * return "attend/attend"; }
      */
 
     @RequestMapping(value = "attend")
     public String attend() {
-        LOGGER.debug("attend");
-        // 实际返回的是views/test.jsp ,spring-mvc.xml中配置过前后缀
+        LOGGER.info("attend");
         return "attend/attend";
     }
 
     @RequestMapping(value = "getAtdList")
     @ResponseBody
-    public String getAtdList() {
-        LOGGER.error("getAtdList");
-        PageBean<Attend> atdPageBean = attendService.getAtdPage(
-                "atd.getAttend", null);
-        return JsonUtil.PageJson(atdPageBean);
+    public String getAtdList(@RequestParam Map<String, String> params) {
+        LOGGER.info("getAtdList-params:" + params.toString());
+        PageBean<Attend> atdPage = attendService.getAttendPage(params);
+        return JsonUtil.PageJson(atdPage);
     }
 
     @RequestMapping(value = "addAtdList")
     @ResponseBody
-    public String addAtdList() {
-        LOGGER.error("addAtdList");
-        // PageBean<Attend>
-        // atdPageBean=attendService.getAtdPage("atd.getAttend", null);
-        //return JsonUtil.JsonSuccess(success, obj);
-        return "";
+    public String addAtdList(@RequestParam Map<String, String> params) {
+        LOGGER.info("addAtdList-params:" + params.toString());
+        boolean atdPage = attendService.addAttend(params);
+        return JsonUtil.JsonSuccess(atdPage, atdPage);
     }
 
     @RequestMapping(value = "work")
     public String work() {
-        LOGGER.debug("work");
-        // 实际返回的是views/test.jsp ,spring-mvc.xml中配置过前后缀
+        LOGGER.info("work");
         return "attend/work";
     }
 

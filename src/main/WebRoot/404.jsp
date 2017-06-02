@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<% String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<base href="<%=basePath %>" />
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ATTEND LOGIN</title>

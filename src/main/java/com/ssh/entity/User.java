@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -18,7 +19,8 @@ public class User {
     private String userId;*/
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "paymentableGenerator")    
+    @GenericGenerator(name = "paymentableGenerator", strategy = "assigned")   
     @Column(name = "USER_NAME")
     private String username;
     

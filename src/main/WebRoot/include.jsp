@@ -1,7 +1,7 @@
 <!-- jQuery -->
 <script src="js/lib/jquery/jquery-3.1.1.min.js"></script>
 
-<!-- layui -->
+<!-- layui 和bsp有很多冲突的地方，不适合同时使用 -->
 <script src="js/lib/layui/layui.js"></script>
 <link rel="stylesheet" type="text/css" href="js/lib/layui/css/layui.css">
 

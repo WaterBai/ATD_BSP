@@ -59,6 +59,24 @@ public class PageSql {
     public void setLimitSql(String limitSql) {
         this.limitSql = limitSql;
     }
+    
+    public String getLimitSql(int totalCount) {
+        this.totalCount=totalCount;
+        if (totalCount < min) {
+            currentPage = 1;
+            min = 1;
+            max = pageSize;
+        }
+        if (DBType.MYSQL.equals(this.dbType))
+            this.limitSql = (new StringBuilder()).append("SELECT * FROM (")
+                    .append(this.sourceSql).append(") T_T LIMIT ").append(min - 1)
+                    .append(",").append((max - min) + 1).toString();
+        else
+            this.limitSql = (new StringBuilder()).append("SELECT * FROM (")
+                    .append(this.sourceSql).append(") T_T LIMIT ").append(min - 1)
+                    .append(",").append((max - min) + 1).toString();
+        return limitSql;
+    }
 
     public int getTotalCount() {
         return totalCount;
@@ -102,24 +120,6 @@ public class PageSql {
 
     public void setCountSql(String countSql) {
         this.countSql = countSql;
-    }
-
-    public String getLimitSql(int totalCount) {
-        this.totalCount=totalCount;
-        if (totalCount < min) {
-            currentPage = 1;
-            min = 1;
-            max = pageSize;
-        }
-        if (DBType.MYSQL.equals(this.dbType))
-            this.limitSql = (new StringBuilder()).append("SELECT * FROM (")
-                    .append(this.sourceSql).append(") T_T LIMIT ").append(min - 1)
-                    .append(",").append((max - min) + 1).toString();
-        else
-            this.limitSql = (new StringBuilder()).append("SELECT * FROM (")
-                    .append(this.sourceSql).append(") T_T LIMIT ").append(min - 1)
-                    .append(",").append((max - min) + 1).toString();
-        return limitSql;
     }
 
     public String getCountSql() {

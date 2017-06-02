@@ -28,7 +28,7 @@ body {
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="home.do" target="mainFrame">
+				<a class="navbar-brand" href="login/home.do" target="mainFrame">
 					<span class="second">
 						<i class="fa fa-book"></i> ATTEND
 					</span>
@@ -71,7 +71,7 @@ body {
 			<li class="active"><a href="home.do" target="mainFrame">Home</a>
 			<!-- <li class="active">Dashboard</li> -->
 		</ul>
-		<iframe id="mainFrame" name="mainFrame" src = "home.do"
+		<iframe id="mainFrame" name="mainFrame" src = "login/home.do"
             frameborder="0" style="padding: 0px; width: 100%;"></iframe>
         <!-- <footer>
 			<hr>
