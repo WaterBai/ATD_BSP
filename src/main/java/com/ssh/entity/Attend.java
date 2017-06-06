@@ -1,8 +1,11 @@
 package com.ssh.entity;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "attend")
@@ -34,6 +37,54 @@ public class Attend {
     
     @Column(name = "REMARK")
     private String remark;
+
+    @Column(name = "CREATE_TIME")
+    //@DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date createTime = new Date();
+    //private Long createTime = System.currentTimeMillis();
+    
+    @Column(name = "CREATE_USER")
+    private String createUser;
+    
+    @Column(name = "UPDATE_TIME")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date updateTime = new Date();
+    //private Long createTime = System.currentTimeMillis();
+    
+    @Column(name = "UPDATE_USER")
+    private String updateUser;
+    
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
 
     public Long getId() {
         return id;
@@ -104,7 +155,10 @@ public class Attend {
         return "Attend [id=" + id + ", username=" + username + ", type=" + type
                 + ", project=" + project + ", work=" + work + ", startTime="
                 + startTime + ", endTime=" + endTime + ", remark=" + remark
+                + ", createTime=" + createTime + ", createUser=" + createUser
+                + ", updateTime=" + updateTime + ", updateUser=" + updateUser
                 + "]";
     }
+
     
 }

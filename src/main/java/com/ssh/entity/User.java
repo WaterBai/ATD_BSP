@@ -13,11 +13,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @DynamicUpdate(true)
 public class User {
 
-    /*@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
-    private String userId;*/
-    
     @Id
     @GeneratedValue(generator = "paymentableGenerator")    
     @GenericGenerator(name = "paymentableGenerator", strategy = "assigned")   

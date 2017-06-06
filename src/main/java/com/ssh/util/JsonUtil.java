@@ -2,7 +2,6 @@ package com.ssh.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.ssh.page.PageBean;
 
@@ -12,16 +11,17 @@ public class JsonUtil {
 
 	/**
 	 * 后端分页json
+	 * @param <T>
 	 * @param page 分页数据
 	 * @return 分页json
 	 */
-	public static String PageJson(PageBean page) {
-		List list = page.getResults();
+	public static <T> String PageJson(PageBean<T> page) {
+		List<T> list = page.getResults();
 		int total = page.getTotalCount();
 		JSONObject jsonBean = new JSONObject();
 		jsonBean.put("total", total);
 		if (list==null){
-			jsonBean.put("rows", new ArrayList());
+			jsonBean.put("rows", new ArrayList<T>());
 		}else{
 			jsonBean.put("rows", list);
 		}

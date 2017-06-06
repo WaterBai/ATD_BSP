@@ -124,8 +124,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
         return t;
     }
 
-    @Override
-    public int excuteBySql(String sql) {
+    private int excuteBySql(String sql) {
         int result = -1;
         try {
             SQLQuery query = this.getCurrentSession().createSQLQuery(sql);
@@ -137,7 +136,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public int excuteBySqlId(String scriptId, Map<String, String> parameters) {
+    public int excuteBySqlId(String scriptId, Map<String, ?> parameters) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
@@ -148,8 +147,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
     
     @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> queryBySql(String sql, Class<T> clazz) {
+    private <T> List<T> queryBySql(String sql, Class<T> clazz) {
         try {
             Query query = this.getCurrentSession().createSQLQuery(sql)
                     .addEntity(clazz);
@@ -162,8 +160,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public List<Map<String, Object>> queryBySql(String sql) {
+    private List<Map<String, Object>> queryBySql(String sql) {
         try {
             Query query = this.getCurrentSession().createSQLQuery(sql)
                     .setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
@@ -176,8 +173,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public <T> PageBean<T> queryPageBeanBySql(String sql, int currentPage,
+    private <T> PageBean<T> queryPageBeanBySql(String sql, int currentPage,
             int pageSize, Class<T> clazz) {
         PageSql pagesql = new PageSql(sql, currentPage, pageSize);
         long l = System.currentTimeMillis();
@@ -203,8 +199,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public PageBean<Map<String, Object>> queryPageBeanBySql(String sql,
+    private PageBean<Map<String, Object>> queryPageBeanBySql(String sql,
             int currentPage, int pageSize) {
         // 封装查询sql的类，以便获取相应的sql
         PageSql pagesql = new PageSql(sql, currentPage, pageSize);
@@ -232,7 +227,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public List<Map<String, Object>> queryBySqlId(String scriptId,
-            Map<String, String> parameters) {
+            Map<String, ?> parameters) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
@@ -243,7 +238,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public <T> List<T> queryBySqlId(String scriptId, Map<String, String> parameters,
+    public <T> List<T> queryBySqlId(String scriptId, Map<String, ?> parameters,
             Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
@@ -256,7 +251,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public <T> PageBean<T> queryPageBeanBySqlId(String scriptId,
-            Map<String, String> parameters, int currentPage, int pageSize,
+            Map<String, ?> parameters, int currentPage, int pageSize,
             Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
@@ -270,7 +265,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public PageBean<Map<String, Object>> queryPageBeanBySqlId(String scriptId,
-            Map<String, String> parameters, int currentPage, int pageSize) {
+            Map<String, ?> parameters, int currentPage, int pageSize) {
         StatementTemplate statementTemplate = templateCache.get(scriptId);
         String statement = processTemplate(statementTemplate, parameters);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
@@ -281,8 +276,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
     
     @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> queryPageBySql(String sql, int currentPage,
+    private <T> List<T> queryPageBySql(String sql, int currentPage,
             int pageSize, Class<T> clazz) {
         PageSql pagesql = new PageSql(sql, currentPage, pageSize);
         long l = System.currentTimeMillis();
@@ -306,7 +300,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @Override
-    public <T> List<T> queryPageBySqlId(String sqlId, Map<String, String> values,
+    public <T> List<T> queryPageBySqlId(String sqlId, Map<String, ?> values,
             int currentPage, int pageSize, Class<T> clazz) {
         StatementTemplate statementTemplate = templateCache.get(sqlId);
         String statement = processTemplate(statementTemplate, values);
@@ -318,8 +312,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public List<Map<String, Object>> queryPageBySql(String sql,
+    private List<Map<String, Object>> queryPageBySql(String sql,
             int currentPage, int pageSize) {
      // 封装查询sql的类，以便获取相应的sql
         PageSql pagesql = new PageSql(sql, currentPage, pageSize);
@@ -346,7 +339,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     @Override
     public List<Map<String, Object>> queryPageBySqlId(String sqlId,
-            Map<String, String> values, int currentPage, int pageSize) {
+            Map<String, ?> values, int currentPage, int pageSize) {
         StatementTemplate statementTemplate = templateCache.get(sqlId);
         String statement = processTemplate(statementTemplate, values);
         if (SqlType.SQL.equals(statementTemplate.getType())) {

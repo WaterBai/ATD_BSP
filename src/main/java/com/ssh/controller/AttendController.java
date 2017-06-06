@@ -1,5 +1,6 @@
 package com.ssh.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ssh.entity.Attend;
 import com.ssh.page.PageBean;
@@ -27,12 +29,6 @@ public class AttendController {
     @Autowired
     private AttendService attendService;
 
-    /*
-     * @RequestMapping(value = "index") public String index() {
-     * LOGGER.info("index"); // 实际返回的是views/test.jsp ,spring-mvc.xml中配置过前后缀
-     * return "attend/attend"; }
-     */
-
     @RequestMapping(value = "attend")
     public String attend() {
         LOGGER.info("attend");
@@ -47,12 +43,52 @@ public class AttendController {
         return JsonUtil.PageJson(atdPage);
     }
 
-    @RequestMapping(value = "addAtdList")
+    @RequestMapping(value = "getAtd")
+    public ModelAndView getAtd(@RequestParam Map<String, String> params) {
+        LOGGER.info("getAtd-params:" + params.toString());
+        ModelAndView view = new ModelAndView();
+        String id = params.get("id");
+        if (!"".equals(id) && id != null) {
+            Attend atd = attendService.getAttend(params.get("id"));
+            view.addObject("atd", atd);
+            view.addObject("editType", "edit");
+        }else {
+            view.addObject("editType", "add");
+        }
+        view.setViewName("attend/attendEdit");
+        return view;
+    }
+
+    @RequestMapping(value = "editAtd")
     @ResponseBody
-    public String addAtdList(@RequestParam Map<String, String> params) {
-        LOGGER.info("addAtdList-params:" + params.toString());
-        boolean atdPage = attendService.addAttend(params);
+    public String editAtd(Attend attend,String editType) {
+        LOGGER.info("getAtd-attend:" + attend.toString());
+        LOGGER.info("getAtd-editType:" + editType);
+        boolean atdPage = false;
+        if ("add".equals(editType)){
+            atdPage = attendService.addAttend(attend,"user");
+        }else {
+            atdPage = attendService.editAttend(attend,"zh");
+        }
         return JsonUtil.JsonSuccess(atdPage, atdPage);
+    }
+    
+    @RequestMapping(value = "removeAtd")
+    @ResponseBody
+    public String removeAtd(String[] ids) {
+        //LOGGER.info("getAtd-attend:" + attend.toString());
+        //Long id = attend.getId();
+        Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("ids", ids);
+        LOGGER.info("removeAtd-params:" + ids.toString());
+        //int atdBool = false;
+        String[] id = params.get("ids");
+        if (id != null) {
+            int atdBool = attendService.removeAttend(params, "user");
+            return JsonUtil.JsonSuccess(true, atdBool);
+        }else{
+            return JsonUtil.JsonSuccess(false, 0);
+        }
     }
 
     @RequestMapping(value = "work")

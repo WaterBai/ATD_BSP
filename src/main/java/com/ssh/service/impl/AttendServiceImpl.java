@@ -1,5 +1,6 @@
 package com.ssh.service.impl;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,33 @@ public class AttendServiceImpl implements AttendService {
     }
     
     @Override
-    public boolean addAttend(Map<String, String> param) {
-        Attend atd = new Attend();
-        atd.setProject("22222222");
-        atd.setUsername("zh");
-        atd.setWork("2222222233333333333");
+    public Attend getAttend(String id) {
+        Long atdid = Long.parseLong(id);
+        Attend atd = baseDao.getById(Attend.class, atdid);
+        return atd;
+    }
+
+
+    @Override
+    public boolean addAttend(Attend atd,String username) {
+        //atd.setUsername(username);
+        atd.setCreateUser(username);
+        atd.setUpdateUser(username);
+        atd.setCreateTime(new Date());
         return baseDao.addEntity(atd);
     }
 
+    @Override
+    public boolean editAttend(Attend atd, String username) {
+        atd.setUpdateUser(username);
+        return baseDao.updateEntity(atd);
+    }
+
+    @Override
+    public int removeAttend( Map<String, String[]> param, String username) {
+        //int atdid = Integer.parseInt(id);
+        return baseDao.excuteBySqlId("atd.removeAttend", param);
+    }
+    
 
 }

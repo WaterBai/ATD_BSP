@@ -41,32 +41,37 @@ public class TestServiceImpl implements TestService{
     @Override
     public int excuteBySql(String scriptId,Map<String,String> param){
         String sql = "insert into Person (address, created, phone, remark, username) values ('222', '222', '222', '2222', '2222')";
-        return baseDao.excuteBySql(sql);
+        //return baseDao.excuteBySql(sql);
+        return 1;
     }
 
     @Override
     public List<Map<String,Object>> queryBySql(String scriptId,Map<String,String> param) {
         String sql = "select * from person";
-        return baseDao.queryBySql(sql);
+        //return baseDao.queryBySql(sql);
+        return null;
     }
 
     @Override
     public <T> List<T> queryBySql(String scriptId,Map<String,String> param,Class<T> clazz){
         String sql = "select * from person";
-        return baseDao.queryBySql(sql,clazz);
+        //return baseDao.queryBySql(sql,clazz);
+        return null;
     }
     
     @Override
     public <T> PageBean<T> queryPageBySql(String scriptId,
             Map<String, String> param, int currentPage, int pageSize,Class<T> clazz) {
         String sql = "select * from person";
-        return baseDao.queryPageBeanBySql(sql, 1, 5,clazz);
+        //baseDao.queryPageBeanBySql(sql, 1, 5,clazz);
+        return null;
     }
     @Override
     public PageBean<Map<String, Object>> queryPageBySql(String scriptId,
             Map<String, String> param, int currentPage, int pageSize) {
         String sql = "select * from person";
-        return baseDao.queryPageBeanBySql(sql, 1, 5);
+        //baseDao.queryPageBeanBySql(sql, 1, 5);
+        return null;
     }
 
     @Override
@@ -78,7 +83,6 @@ public class TestServiceImpl implements TestService{
     @Override
     public <T> List<T> queryBySqlId(String sqlId, Map<String, String> param,
             Class<T> clazz) {
-        // TODO Auto-generated method stub
         return baseDao.queryBySqlId(sqlId, param, clazz);
     }
 }
