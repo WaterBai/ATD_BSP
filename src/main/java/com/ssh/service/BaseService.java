@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.ssh.page.PageBean;
+import com.ssh.model.PageBean;
 
 public interface BaseService {
     

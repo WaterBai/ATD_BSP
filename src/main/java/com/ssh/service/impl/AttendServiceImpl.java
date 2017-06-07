@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssh.entity.Attend;
-import com.ssh.page.PageBean;
+import com.ssh.model.PageBean;
 import com.ssh.repository.BaseRepository;
 import com.ssh.service.AttendService;
 
@@ -59,7 +59,7 @@ public class AttendServiceImpl implements AttendService {
     }
 
     @Override
-    public int removeAttend( Map<String, String[]> param, String username) {
+    public int removeAttend( Map<String, Object> param, String username) {
         //int atdid = Integer.parseInt(id);
         return baseDao.excuteBySqlId("atd.removeAttend", param);
     }

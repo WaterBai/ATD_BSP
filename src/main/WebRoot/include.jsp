@@ -23,5 +23,6 @@
 
 <!-- me-style -->
 <script src="js/common.js"></script>
+<script src="js/config.js"></script>
 <link rel="stylesheet" type="text/css" href="css/theme.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">

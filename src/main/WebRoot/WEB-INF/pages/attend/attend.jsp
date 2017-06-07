@@ -121,7 +121,6 @@ var ButtonInit = function() {
 							$.alertInfo("Data: " + data + "\nStatus: " + status);
 							$Table.bootstrapTable('refresh');
 						});
-						//BtnSaveClick(postdata);
 					},
 					close : {}
 				},
@@ -187,7 +186,7 @@ var ButtonInit = function() {
 						confirm : {
 							btnClass : 'btn-primary',
 							action : function() {
-								$.post("attend/removeAtd.do", {"ids[]" : ids}, function(data, status) {
+								$.post("attend/removeAtd.do", {"ids" : ids}, function(data, status) {
 									$.alertInfo(data.message);
 									$Table.bootstrapTable('refresh');
 								});

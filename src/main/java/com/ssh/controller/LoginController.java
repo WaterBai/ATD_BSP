@@ -1,6 +1,11 @@
 package com.ssh.controller;
 
+import java.util.Date;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ssh.entity.PersonTest;
 import com.ssh.entity.User;
+import com.ssh.model.LoginInfo;
 import com.ssh.service.TestService;
 import com.ssh.service.UserService;
 
@@ -38,13 +44,20 @@ public class LoginController {
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ModelAndView login(@RequestParam Map<String, String> params) {
+    public ModelAndView login(HttpServletRequest request,
+            HttpServletResponse response,@RequestParam Map<String, String> params) {
         LOGGER.info("login");
         ModelAndView view = new ModelAndView();
-        String username = params.get("username");
+        String userId = params.get("userId");
         String password = params.get("password");
-        LOGGER.info(username);
-        LOGGER.info(password);
+        LoginInfo loginSession = new LoginInfo();
+        loginSession.setUserId(userId);
+        loginSession.setUsername("");
+        loginSession.setLastLoginIp(request.getRemoteAddr());
+        loginSession.setLastLoginTime(new Date());
+        request.getSession().setAttribute(LoginInfo.USER_SESSION_KEY, loginSession);
+        LOGGER.info("userId:"+userId);
+        LOGGER.info("password:"+password);
         view.setViewName("redirect:/login/index.do");
         return view;
     }

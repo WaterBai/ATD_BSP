@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssh.entity.PersonTest;
-import com.ssh.page.PageBean;
+import com.ssh.model.PageBean;
 import com.ssh.service.TestService;
 
 @Controller

@@ -3,7 +3,7 @@ package com.ssh.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssh.page.PageBean;
+import com.ssh.model.PageBean;
 
 import net.sf.json.JSONObject;
 

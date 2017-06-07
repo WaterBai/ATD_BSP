@@ -16,6 +16,9 @@ public class User {
     @Id
     @GeneratedValue(generator = "paymentableGenerator")    
     @GenericGenerator(name = "paymentableGenerator", strategy = "assigned")   
+    @Column(name = "USER_ID")
+    private String userId;
+
     @Column(name = "USER_NAME")
     private String username;
     
@@ -41,7 +44,7 @@ public class User {
     private String status;
     
     @Column(name = "USER_IDNUMBER")
-    private String idnumber;
+    private String idNumber;
 
     @Column(name = "LOGIN_IP")
     private String loginIp;
@@ -64,7 +67,15 @@ public class User {
     
     @Column(name = "UPDATE_USER")
     private String updateUser;
+    
+    public String getUserId() {
+        return userId;
+    }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -129,12 +140,12 @@ public class User {
         this.status = status;
     }
 
-    public String getIdnumber() {
-        return idnumber;
+    public String getIdNumber() {
+        return idNumber;
     }
 
-    public void setIdnumber(String idnumber) {
-        this.idnumber = idnumber;
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
     }
 
     public String getLoginIp() {
@@ -187,14 +198,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [username=" + username + ", password=" + password
-                + ", sex=" + sex + ", birthday=" + birthday + ", address="
-                + address + ", email=" + email + ", phone=" + phone
-                + ", status=" + status + ", idnumber=" + idnumber
-                + ", loginIp=" + loginIp + ", remark=" + remark
+        return "User [userId=" + userId + ", username=" + username
+                + ", password=" + password + ", sex=" + sex + ", birthday="
+                + birthday + ", address=" + address + ", email=" + email
+                + ", phone=" + phone + ", status=" + status + ", idnumber="
+                + idNumber + ", loginIp=" + loginIp + ", remark=" + remark
                 + ", createTime=" + createTime + ", createUser=" + createUser
                 + ", updateTime=" + updateTime + ", updateUser=" + updateUser
                 + "]";
     }
-    
+
 }

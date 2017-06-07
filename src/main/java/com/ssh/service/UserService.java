@@ -3,7 +3,7 @@ package com.ssh.service;
 import java.util.Map;
 
 import com.ssh.entity.User;
-import com.ssh.page.PageBean;
+import com.ssh.model.PageBean;
 
 public interface UserService {
 

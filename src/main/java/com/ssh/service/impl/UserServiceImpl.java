@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssh.entity.User;
-import com.ssh.page.PageBean;
+import com.ssh.model.PageBean;
 import com.ssh.repository.BaseRepository;
 import com.ssh.service.UserService;
 

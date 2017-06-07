@@ -1,4 +1,4 @@
-package com.ssh.page;
+package com.ssh.model;
 
 import com.ssh.db.DBType;
 

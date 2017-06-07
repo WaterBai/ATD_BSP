@@ -3,7 +3,7 @@ package com.ssh.service;
 import java.util.Map;
 
 import com.ssh.entity.Attend;
-import com.ssh.page.PageBean;
+import com.ssh.model.PageBean;
 
 public interface AttendService {
 
@@ -17,5 +17,5 @@ public interface AttendService {
     
     public boolean editAttend(Attend atd,String username);
 
-    public int removeAttend( Map<String, String[]> param, String username);
+    public int removeAttend( Map<String, Object> param, String username);
 }

@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,11 +21,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssh.db.DirectiveHandler;
 import com.ssh.db.SqlType;
 import com.ssh.db.StatementTemplate;
 import com.ssh.db.resolver.DynamicHibernateStatementBuilder;
-import com.ssh.page.PageBean;
-import com.ssh.page.PageSql;
+import com.ssh.model.PageBean;
+import com.ssh.model.PageSql;
 import com.ssh.repository.BaseRepository;
 
 import freemarker.cache.StringTemplateLoader;
@@ -145,7 +147,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
             return 0;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private <T> List<T> queryBySql(String sql, Class<T> clazz) {
         try {
@@ -274,7 +276,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
             return null;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private <T> List<T> queryPageBySql(String sql, int currentPage,
             int pageSize, Class<T> clazz) {
@@ -305,7 +307,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
         StatementTemplate statementTemplate = templateCache.get(sqlId);
         String statement = processTemplate(statementTemplate, values);
         if (SqlType.SQL.equals(statementTemplate.getType())) {
-            return this.queryPageBySql(statement, currentPage, pageSize,clazz);
+            return this.queryPageBySql(statement, currentPage, pageSize, clazz);
         } else {
             return null;
         }
@@ -314,7 +316,7 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     @SuppressWarnings("unchecked")
     private List<Map<String, Object>> queryPageBySql(String sql,
             int currentPage, int pageSize) {
-     // 封装查询sql的类，以便获取相应的sql
+        // 封装查询sql的类，以便获取相应的sql
         PageSql pagesql = new PageSql(sql, currentPage, pageSize);
         long l = System.currentTimeMillis();
         List<Map<String, Object>> results = null;
@@ -380,15 +382,25 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
 
     protected String processTemplate(StatementTemplate statementTemplate,
             Map<String, ?> parameters) {
+        Map<String, DirectiveHandler> root = new HashMap<String, DirectiveHandler>();
+        if (parameters != null) {
+            String key; Object obj;
+            Iterator<String> it = parameters.keySet().iterator();
+            while (it.hasNext()) {
+                key = (String) it.next();
+                obj = parameters.get(key);
+                root.put(key, new DirectiveHandler(obj));
+            }
+        }
         StringWriter stringWriter = new StringWriter();
         try {
-            statementTemplate.getTemplate().process(parameters, stringWriter);
+            Template template = statementTemplate.getTemplate();
+            template.process(root, stringWriter);
         } catch (Exception e) {
             LOGGER.error("处理DAO查询参数模板时发生错误：{}", e.toString());
             e.printStackTrace();
         }
         return stringWriter.toString();
     }
-
 
 }
