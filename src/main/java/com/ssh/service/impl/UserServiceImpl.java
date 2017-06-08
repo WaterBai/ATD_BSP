@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssh.entity.User;
+import com.ssh.model.LoginInfo;
 import com.ssh.model.PageBean;
 import com.ssh.repository.BaseRepository;
 import com.ssh.service.UserService;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     private BaseRepository baseDao;
 
@@ -42,4 +43,18 @@ public class UserServiceImpl implements UserService{
         return false;
     }
 
+    @Override
+    public LoginInfo loginUser(String userId, String password) {
+        User queryUser = baseDao.getById(User.class, userId);
+        if (queryUser != null) {
+            if (password.equals(queryUser.getPassword())
+                    && userId.equals(queryUser.getUserId())) {
+                LoginInfo loginSession = new LoginInfo();
+                loginSession.setUserId(queryUser.getUserId());
+                loginSession.setUsername(queryUser.getUsername());
+                return loginSession;
+            }
+        }
+        return null;
+    }
 }

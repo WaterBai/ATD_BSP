@@ -106,6 +106,10 @@ public class BaseRepositoryImpl implements BaseRepository, InitializingBean {
     @Override
     public <T> T getById(Class<T> clazz, Serializable id) {
         T t = null;
+        if(id ==null){
+            LOGGER.info("ID为空，返回空");
+            return t;
+        }
         try {
             t = (T) this.getCurrentSession().get(clazz, id);
         } catch (Exception e) {

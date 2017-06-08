@@ -30,4 +30,6 @@ body {
 			</p>
 		</div>
 	</div>
+</body>
+
 </html>

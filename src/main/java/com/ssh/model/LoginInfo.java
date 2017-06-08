@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class LoginInfo implements Serializable {
 
-    public static String USER_SESSION_KEY = "login.session.key";
+    public static String USER_SESSION_KEY = "loginSessionKey";
     private static final long serialVersionUID = 1L;
     private String userId;
     private String username;

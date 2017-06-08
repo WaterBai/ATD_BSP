@@ -1,25 +1,23 @@
 package com.ssh.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
-import com.ssh.entity.PersonTest;
 import com.ssh.entity.User;
 import com.ssh.model.LoginInfo;
-import com.ssh.service.TestService;
 import com.ssh.service.UserService;
 
 @Controller
@@ -30,91 +28,52 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "home", method = RequestMethod.GET)
-    public String home(@RequestParam Map<String, String> params) {
-        LOGGER.info("home");
-        return "home";
-    }
-    @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String index(@RequestParam Map<String, String> params) {
-        LOGGER.info("index");
-        String username = params.get("username");
-        LOGGER.info(username);
-        return "index";
-    }
-
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "login")
     public ModelAndView login(HttpServletRequest request,
             HttpServletResponse response,@RequestParam Map<String, String> params) {
-        LOGGER.info("login");
+        LOGGER.info("login/login");        
+        LOGGER.info("params:"+params.toString());        
         ModelAndView view = new ModelAndView();
         String userId = params.get("userId");
         String password = params.get("password");
-        LoginInfo loginSession = new LoginInfo();
-        loginSession.setUserId(userId);
-        loginSession.setUsername("");
-        loginSession.setLastLoginIp(request.getRemoteAddr());
-        loginSession.setLastLoginTime(new Date());
-        request.getSession().setAttribute(LoginInfo.USER_SESSION_KEY, loginSession);
-        LOGGER.info("userId:"+userId);
-        LOGGER.info("password:"+password);
-        view.setViewName("redirect:/login/index.do");
+        LoginInfo loginSession = userService.loginUser(userId, password);
+        if(loginSession!=null){
+            loginSession.setLastLoginIp(request.getRemoteAddr());
+            loginSession.setLastLoginTime(new Date());
+            LOGGER.info(loginSession.toString());
+            request.getSession().setAttribute(LoginInfo.USER_SESSION_KEY, loginSession);
+            view.setViewName("redirect:/main/index.do");
+        }else{
+            view.setView(new RedirectView("../login.jsp"));
+        }
         return view;
+    }
+    
+    @RequestMapping(value = "logout")
+    public void logout(HttpServletRequest request,
+            HttpServletResponse response,@RequestParam Map<String, String> params) {
+        LOGGER.info("login/logout");
+        request.getSession().invalidate();
+        try {
+            response.sendRedirect("../login.jsp");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "register")
     public ModelAndView register(User user) {
-        LOGGER.info("register");
-        LOGGER.info(user.toString());
+        LOGGER.info("login/register");
         ModelAndView view = new ModelAndView();
-        view.addObject(user);
-        view.setViewName("redirect:/login/login.do");
+        boolean success = userService.addUser(user);
+        LOGGER.info("register:"+user.toString());
+        if(success){
+            view.addObject("userId",user.getUserId());
+            view.addObject("password",user.getPassword());
+            view.setViewName("redirect:/login/login.do");
+        }else{
+            view.setView(new RedirectView("../register.jsp"));
+        }
         return view;
     }
-    
-    /**
-     * 用Map接收前端提交的Form Data或Query String，如果有相同的参数名，只接收第一个
-     * @author XuJijun
-     * @param params
-     * @return
-     */
-    /*@RequestMapping(value = "map", method = RequestMethod.POST)
-    public Map<String, Object> map(@RequestParam Map<String, Object> params) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap = params;
-        LOGGER.debug((String) params.get("username"));
-        LOGGER.debug((String) resultMap.get("password"));
-        return resultMap;
-    }*/
-    
-    /**
-     * 用MultiValueMap接收前端提交的Form Data或Query String，可以接收相同的参数名的值到同一个list中
-     * @author XuJijun
-     * @param params
-     * @return
-     */
-    /*@RequestMapping(value = "multiValueMap", method = RequestMethod.POST)
-    public Map<String, List<Object>> multiValueMap(@RequestParam MultiValueMap<String, Object> params) {
-        Map<String, List<Object>> resultMap = new HashMap<>();
-        resultMap = params;
-        LOGGER.debug("map");
-        LOGGER.debug(params.get("username"));
-        LOGGER.debug(resultMap.get("password"));
-        return resultMap;
-    }*/
-    
-    /**
-     * 用Map接收前端提交的json格式的Request Payload，如果有相同的参数名，只接收最后一个
-     * @author XuJijun
-     * @param params
-     * @return
-     */
-    /*@RequestMapping(value = "jsonParams", method = RequestMethod.POST)
-    public Map<String, Object> jsonParams(@RequestBody Map<String, Object> params) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap = params;
-        LOGGER.debug((String) params.get("username"));
-        LOGGER.debug((String) resultMap.get("password"));
-        return resultMap;
-    }*/
 }

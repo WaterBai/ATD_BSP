@@ -28,7 +28,7 @@ body {
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="login/home.do" target="mainFrame">
+				<a class="navbar-brand" href="main/home.do" target="mainFrame">
 					<span class="second">
 						<i class="fa fa-book"></i> ATTEND
 					</span>
@@ -41,13 +41,13 @@ body {
 					<li><a href="#">Settings</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">Jack Smith <span class="caret"></span></a>
+						aria-expanded="false">${loginSessionKey.username}<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a tabindex="-1" href="#">My Account</a></li>
 							<li class="divider"></li>
 							<li><a tabindex="-1" class="visible-phone" href="#">Settings</a></li>
 							<li class="divider visible-phone"></li>
-							<li><a tabindex="-1" href="sign-in.html">Logout</a></li>
+							<li><a tabindex="-1" href="login/logout.do">Logout</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -68,10 +68,10 @@ body {
 
 	<div class="content">
 		<ul class="breadcrumb">
-			<li class="active"><a href="home.do" target="mainFrame">Home</a>
+			<li class="active"><a href="main/home.do" target="mainFrame">Home</a>
 			<!-- <li class="active">Dashboard</li> -->
 		</ul>
-		<iframe id="mainFrame" name="mainFrame" src = "login/homee.do"
+		<iframe id="mainFrame" name="mainFrame" src = "main/home.do"
             frameborder="0" style="padding: 0px; width: 100%;"></iframe>
         <!-- <footer>
 			<hr>
@@ -92,14 +92,14 @@ $(document).ready(function() {
 
 function reinitIframe() { 
     var iframe = document.getElementById("mainFrame");  
-    try {  
+    try {
     	var bHeight = document.documentElement.clientHeight-100;
         //var bHeight = iframe.contentWindow.document.body.scrollHeight;  
         var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;  
-        //var height = Math.max(bHeight, dHeight);  
+        var height = Math.max(bHeight, dHeight);  
         //var height = bHeight;  
-        iframe.height = bHeight;  
-    } catch (ex) {}  
+        iframe.height = height;  
+    } catch (ex) {}
 }
 window.setInterval("reinitIframe()", 200);
 

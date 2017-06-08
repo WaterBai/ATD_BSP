@@ -40,8 +40,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel-body">
 						<form action="login/register.do" method="post">
 							<div class="form-group">
-								<label for="username">Username</label> 
-								<input type="text" class="form-control" name="username" id="username" placeholder="Username">
+								<label for="userId">Username</label> 
+								<input type="text" class="form-control" name="userId" id="userId" placeholder="Username">
 							</div>
 							<div class="form-group">
 								<label for="password">Password</label> 

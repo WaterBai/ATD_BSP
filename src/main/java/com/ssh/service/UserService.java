@@ -3,6 +3,7 @@ package com.ssh.service;
 import java.util.Map;
 
 import com.ssh.entity.User;
+import com.ssh.model.LoginInfo;
 import com.ssh.model.PageBean;
 
 public interface UserService {
@@ -18,5 +19,7 @@ public interface UserService {
     public boolean deleteUser(User user);
     
     public boolean checkUser(User user);
-
+    
+    public LoginInfo loginUser(String userId,String password);
+    
 }
