@@ -61,8 +61,8 @@ body {
 			<i class="icon-dashboard"></i>ATD
 		</div>
 		<ul id="dashboard-menu" class="nav nav-list collapse in">
-			<li><a href="attend/work.do" target="mainFrame">me</a></li>
-			<li><a href="attend/attend.do" target="mainFrame">all</a></li>
+			<!-- <li><a href="attend/work.do" target="mainFrame">me</a></li> -->
+			<li><a href="attend/attend.do" target="mainFrame">attend</a></li>
 		</ul>
 	</div>
 

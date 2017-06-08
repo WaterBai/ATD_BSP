@@ -27,7 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="login.jsp">
-					<span class="second">ATTEND</span>
+					<span class="second">
+						<i class="fa fa-book"></i> ATTEND
+					</span>
 				</a>
 			</div>
 		</div>	
